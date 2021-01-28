@@ -7,10 +7,19 @@ namespace Lab02
     {
         internal static ICommand Parse(string[] args)
         {
-            if (args.Length < 2)
+            try
             {
-                throw new FormatException("Boss, it's fiasco.");
-            };
+                return GetParsedCommand(args);
+            }
+            catch (Exception ex) when (ex is FormatException | ex is TypeLoadException)
+            {
+                Console.WriteLine("Non-existent command!");
+            }
+            return null;
+        }
+
+        private static ICommand GetParsedCommand(string[] args)
+        {
             string commandName = args[1] + args[0];
             Type type = Type.GetType($"Lab02.Commands.{commandName}", true, true);
             ICommand parsedCommand = (ICommand)Activator.CreateInstance(type);
