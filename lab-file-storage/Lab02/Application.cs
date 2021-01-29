@@ -10,7 +10,9 @@ namespace Lab02
         public static void Main(string[] args)
         {
             Console.WriteLine("Runned");
-            Authorize();
+            byte [] arr = FileConverter.ConverToByteArray(@"C:\Users\r.vorobyov\Desktop\VorobyovMastery\Unit2_Net\Lab\Minsk-Rostislav-Vorobyov\lab-file-storage\Lab02\img.bmp");
+            FileConverter.WriteAsbinary(arr, @"C:\Users\r.vorobyov\Desktop\VorobyovMastery\Unit2_Net\Lab\Minsk-Rostislav-Vorobyov\lab-file-storage\Lab02\Dest.bin");
+            // Authorize();
         }
 
         private static void Authorize()
