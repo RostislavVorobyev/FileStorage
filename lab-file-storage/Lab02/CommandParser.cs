@@ -3,7 +3,7 @@ using System;
 
 namespace Lab02
 {
-    internal class CommandParser
+    internal static class CommandParser
     {
         internal static ICommand Parse(string[] args)
         {
@@ -11,7 +11,7 @@ namespace Lab02
             {
                 return GetParsedCommand(args);
             }
-            catch (Exception ex) when (ex is FormatException | ex is TypeLoadException)
+            catch (Exception)
             {
                 Console.WriteLine("Non-existent command!");
             }

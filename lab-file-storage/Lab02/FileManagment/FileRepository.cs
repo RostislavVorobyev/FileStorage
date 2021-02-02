@@ -24,9 +24,15 @@ namespace Lab02
             }
         }
 
+        /*
+         * file download <file-name> <destination-path> - скачивание файла c именем file-name из хранилища в директорию destination-path. 
+         * Если файл уже существует, то выдавать сообщение об ошибке.
+         */
+        void Get(string fileName, string destinationPath) { }
+
         void Update() { }
         void Delete() { }
-        void Get() { }
+        
         FileMetaInformation GetMetaInformation()
         {
             throw new NotImplementedException();

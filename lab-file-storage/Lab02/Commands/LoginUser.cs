@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Security.Authentication;
 using System.Text;
 
 namespace Lab02.Commands
@@ -14,23 +15,22 @@ namespace Lab02.Commands
         public LoginUser()
         {
             Options = new List<string>();
-            login = ConfigurationManager.AppSettings.Get("login");
-            password = ConfigurationManager.AppSettings.Get("password");
+            login = ConfigLoader.GetConfiguration()["Login"];
+            password = ConfigLoader.GetConfiguration()["Password"];
         }
 
         public bool Execute()
         {
             if (!OptionsAreValid())
             {
-                Console.WriteLine("Invalid command arguments.");
-                return false;
+                throw new AuthenticationException("Invalid command arguments.");
             }
             string login = Options[1];
             string password = Options[3];
             return login == this.login && password == this.password;
         }
 
-        private bool OptionsAreValid ()
+        private bool OptionsAreValid()
         {
             return Options.Count == 4 && Options[0] == "--l" && Options[2] == "--p";
         }

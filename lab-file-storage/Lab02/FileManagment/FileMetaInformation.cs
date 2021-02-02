@@ -2,7 +2,7 @@
 
 namespace Lab02
 {
-    
+    [Serializable]
     public class FileMetaInformation
     {
         public string FileName { get; set; }
