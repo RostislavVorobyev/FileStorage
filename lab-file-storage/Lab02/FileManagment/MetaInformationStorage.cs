@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
 
 namespace Lab02
 {
@@ -26,27 +24,60 @@ namespace Lab02
 
         private Dictionary<string, FileMetaInformation> ReadData()
         {
-            BinaryFormatter bf = new BinaryFormatter();
             try
             {
-                using (FileStream fs = new FileStream(metainfPath, FileMode.OpenOrCreate))
-                {
-                    storage = (Dictionary<string, FileMetaInformation>)bf.Deserialize(fs);
-                }
+                DeserializeMetainformationFile();
             }
             catch (SerializationException)
             {
                 RestoreMetadataStorage();
             }
-            
-            return new Dictionary<string, FileMetaInformation>();
+            return storage;
+        }
+
+        private void DeserializeMetainformationFile()
+        {
+            BinaryFormatter bf = new BinaryFormatter();
+            using (FileStream fs = new FileStream(metainfPath, FileMode.OpenOrCreate))
+            {
+                storage = (Dictionary<string, FileMetaInformation>)bf.Deserialize(fs);
+            }
         }
 
         private void RestoreMetadataStorage()
         {
-            //todo
-            storage = new Dictionary<string, FileMetaInformation>(); 
-            //throw new NotImplementedException();
+            string [] pathsToFiles = Directory.GetFiles(storagePath);
+            storage = new Dictionary<string, FileMetaInformation>();
+            foreach (var path in pathsToFiles)
+            {
+                FileMetaInformation metainf = GetFileMetaInformation(path);
+                storage.Add(metainf.FileName, metainf);
+            }
+            SaveMetainformationStorage();
+        }
+
+        public FileMetaInformation GetFileMetaInformation(string pathToFile)
+        {
+            FileInfo file = new FileInfo(pathToFile);
+            return new FileMetaInformation(file.Name, pathToFile, file.Extension, file.Length, file.CreationTime);
+        }
+
+        public void SaveMetainformationStorage()
+        {
+            BinaryFormatter bf = new BinaryFormatter();
+            using (FileStream fs = new FileStream(metainfPath, FileMode.OpenOrCreate))
+            {
+                bf.Serialize(fs, storage);
+            }
+        }
+
+        public void PrintMetainf()
+        {
+            Console.WriteLine($"{storage.Count}");
+            foreach (var m in storage)
+            {
+                Console.WriteLine(m.Value.ToString());
+            }
         }
     }
 }

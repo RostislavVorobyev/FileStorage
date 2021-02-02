@@ -1,5 +1,4 @@
 ﻿using Lab02.Commands;
-using Microsoft.Extensions.Configuration;
 using System;
 using System.IO;
 using System.Security.Authentication;
@@ -8,14 +7,16 @@ namespace Lab02
 {
     public class Application
     {
-        public static void Main(string[] args)
+        public static void Main()
         {
             Console.WriteLine("Runned");
             //Authorize();
             //testWrite();
             //testRead();
-            MetaInformationStorage ms = new MetaInformationStorage();
-            ms.GetStorage();
+            //MetaInformationStorage ms = new MetaInformationStorage();
+            //ms.GetStorage();
+            MetaInformationStorage st = new MetaInformationStorage();
+            st.PrintMetainf();
         }
 
         private static void Authorize()
