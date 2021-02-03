@@ -1,22 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
+﻿using System.Collections.Generic;
 using System.Security.Authentication;
-using System.Text;
 
 namespace Lab02.Commands
 {
     public class LoginUser : ICommand
     {
         public List<string> Options { get; }
-        private readonly string login;
-        private readonly string password;
+        private readonly string _login;
+        private readonly string _password;
 
         public LoginUser()
         {
             Options = new List<string>();
-            login = ConfigLoader.GetConfiguration()["Login"];
-            password = ConfigLoader.GetConfiguration()["Password"];
+            _login = ConfigLoader.GetConfiguration()["Login"];
+            _password = ConfigLoader.GetConfiguration()["Password"];
         }
 
         public bool Execute()
@@ -27,7 +24,7 @@ namespace Lab02.Commands
             }
             string login = Options[1];
             string password = Options[3];
-            return login == this.login && password == this.password;
+            return login == this._login && password == this._password;
         }
 
         private bool OptionsAreValid()

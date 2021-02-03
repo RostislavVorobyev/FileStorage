@@ -10,7 +10,7 @@ namespace Lab02
         public static void Main()
         {
             Console.WriteLine("Runned");
-            //Authorize();
+            Authorize();
             //testWrite();
             //testRead();
             //MetaInformationStorage ms = new MetaInformationStorage();

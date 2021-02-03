@@ -1,5 +1,5 @@
-﻿using Lab02.Commands;
-using System;
+﻿using System;
+using Lab02.Commands;
 
 namespace Lab02
 {
