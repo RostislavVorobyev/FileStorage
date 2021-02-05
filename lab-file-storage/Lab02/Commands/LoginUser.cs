@@ -1,23 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Security.Authentication;
+﻿using System.Security.Authentication;
 
 namespace Lab02.Commands
 {
-    public class LoginUser : ICommand
+    internal class LoginUser : ConsoleCommand
     {
-        public List<string> Options { get; }
         private readonly string _login;
         private readonly string _password;
          
-        public LoginUser()
+        public LoginUser() : base()
         {
-            Options = new List<string>();
             _login = ConfigLoader.GetConfiguration()["Login"];
             _password = ConfigLoader.GetConfiguration()["Password"];
         }
 
-        public bool Execute()
+        public override bool Execute()
         {
             if (!OptionsAreValid())
             {
