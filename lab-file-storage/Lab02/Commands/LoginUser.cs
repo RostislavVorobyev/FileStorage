@@ -8,7 +8,7 @@ namespace Lab02.Commands
         public List<string> Options { get; }
         private readonly string _login;
         private readonly string _password;
-
+         
         public LoginUser()
         {
             Options = new List<string>();
@@ -24,7 +24,7 @@ namespace Lab02.Commands
             }
             string login = Options[1];
             string password = Options[3];
-            return login == this._login && password == this._password;
+            return login == _login && password == _password;
         }
 
         private bool OptionsAreValid()

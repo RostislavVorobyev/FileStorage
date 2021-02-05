@@ -3,7 +3,7 @@ using Lab02.Commands;
 
 namespace Lab02
 {
-    internal static class CommandParser
+    internal class CommandParser
     {
         internal static ICommand Parse(string[] args)
         {

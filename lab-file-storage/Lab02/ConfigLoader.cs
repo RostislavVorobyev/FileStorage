@@ -7,7 +7,7 @@ namespace Lab02
         private static IConfiguration configuration;
         private const string path = @"C:\Users\r.vorobyov\Desktop\VorobyovMastery\Unit2_Net\Lab\Minsk-Rostislav-Vorobyov\lab-file-storage\Lab02\appsettings.json";
 
-        internal static IConfiguration GetConfiguration()
+        public static IConfiguration GetConfiguration()
         {
             if (configuration == null)
             {
@@ -17,5 +17,6 @@ namespace Lab02
             }
             return configuration;
         }
+
     }
 }

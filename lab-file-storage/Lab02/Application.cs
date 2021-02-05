@@ -10,13 +10,16 @@ namespace Lab02
         public static void Main()
         {
             Console.WriteLine("Runned");
-            Authorize();
-            //testWrite();
-            //testRead();
-            //MetaInformationStorage ms = new MetaInformationStorage();
-            //ms.GetStorage();
-            MetaInformationStorage st = new MetaInformationStorage();
-            st.PrintMetainf();
+            //MetaInformationStorage st = new MetaInformationStorage();
+            //st.PrintMetainf();
+            //FileRepository fr = new FileRepository();
+            //fr.Upload(@"C:\Users\r.vorobyov\Desktop\VorobyovMastery\Unit2_Net\Lab\Minsk-Rostislav-Vorobyov\lab-file-storage\Lab02\text.txt");
+            //st.PrintMetainf();
+            //fr.Download("text.txt", @"C:\Users\r.vorobyov\Desktop\VorobyovMastery\Unit2_Net\Lab\Minsk-Rostislav-Vorobyov\lab-file-storage\Lab02");
+            //fr.Move("text.txt", "edited.txt");
+            //fr.Delete("text.txt");
+            //st.PrintMetainf();
+
         }
 
         private static void Authorize()
@@ -40,31 +43,6 @@ namespace Lab02
 
                 }
             }
-        }
-
-        private static void ReadMetaInformation()
-        {
-            throw new NotImplementedException();
-        }
-        private static void testWrite()
-        {
-            byte[] arr = FileConverter.ConverToByteArray(@"C:\Users\r.vorobyov\Desktop\VorobyovMastery\Unit2_Net\Lab\Minsk-Rostislav-Vorobyov\lab-file-storage\Lab02\Text.txt");
-            File.WriteAllBytes(@"C:\Users\r.vorobyov\Desktop\VorobyovMastery\Unit2_Net\Lab\Minsk-Rostislav-Vorobyov\lab-file-storage\Lab02\Metainf.bin", arr);
-            //FileConverter.WriteAsBinary(arr, @"C:\Users\r.vorobyov\Desktop\VorobyovMastery\Unit2_Net\Lab\Minsk-Rostislav-Vorobyov\lab-file-storage\Lab02\Database\file.bin");
-
-        }
-        private static void testRead()
-        {
-            var a = File.ReadAllBytes(@"C:\Users\r.vorobyov\Desktop\VorobyovMastery\Unit2_Net\Lab\Minsk-Rostislav-Vorobyov\lab-file-storage\Lab02\Database\ico.bin");
-            File.WriteAllBytes(@"C:\Users\r.vorobyov\Desktop\VorobyovMastery\Unit2_Net\Lab\Minsk-Rostislav-Vorobyov\lab-file-storage\Lab02\icoreaded.bmp", a);
-
-                //FileConverter.ReadBinary(@"C:\Users\r.vorobyov\Desktop\VorobyovMastery\Unit2_Net\Lab\Minsk-Rostislav-Vorobyov\lab-file-storage\Lab02\Database\file.bin", "aa");
-        }
-
-        private static Object TestRead()
-        {
-            throw new NotImplementedException();
-
         }
 
     }

@@ -24,7 +24,7 @@ namespace Lab02
 
         public override string ToString()
         {
-            return $"name: {FileName}, extension: {Extension}, Size: {Size}, CreationDate: {CreationDate.ToShortTimeString()}";
+            return $"name: {FileName}, extension: {Extension}, Size: {Size}, CreationDate: {CreationDate.ToShortTimeString()}, Path: {PathToFile}, Downloads: {DownloadsCounter}";
         }
     }
 }
