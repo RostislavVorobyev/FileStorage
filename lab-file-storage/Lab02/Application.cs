@@ -1,35 +1,49 @@
-﻿using Lab02.Commands;
-using System;
+﻿using System;
+using Lab02.Commands;
+using System.Security.Authentication;
 
 namespace Lab02
 {
     public class Application
     {
-        private static bool isAuthorized;
-
-        public static void Main(string[] args)
+        public static void Main()
         {
             Console.WriteLine("Runned");
-            Authorize();
+            //MetaInformationStorage st = new MetaInformationStorage();
+            //st.PrintMetainf();
+            //FileRepository fr = new FileRepository();
+            //fr.Upload(@"C:\Users\r.vorobyov\Desktop\VorobyovMastery\Unit2_Net\Lab\Minsk-Rostislav-Vorobyov\lab-file-storage\Lab02\text.txt");
+            //st.PrintMetainf();
+            //fr.Download("text.txt", @"C:\Users\r.vorobyov\Desktop\VorobyovMastery\Unit2_Net\Lab\Minsk-Rostislav-Vorobyov\lab-file-storage\Lab02");
+            //fr.Move("text.txt", "edited.txt");
+            //fr.Delete("text.txt");
+            //st.PrintMetainf();
+
         }
 
         private static void Authorize()
         {
+            bool isAuthorized = false;
             while (!isAuthorized)
             {
                 Console.WriteLine("Authorize to use the programm.");
                 string command = Console.ReadLine();
                 ICommand authorization = CommandParser.Parse(command.Split(" "));
-                if (authorization?.GetType() == Type.GetType("Lab02.Commands.LoginUser"))
+                if (authorization?.GetType() == typeof(LoginUser))
                 {
-                    isAuthorized = authorization.Execute();
+                    try
+                    {
+                        isAuthorized = authorization.Execute();
+                    }
+                    catch (AuthenticationException ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+
                 }
             }
         }
 
-        private static void ReadMetaInformation()
-        {
-            throw new NotImplementedException();
-        }
     }
 }
+

@@ -1,5 +1,5 @@
-﻿using Lab02.Commands;
-using System;
+﻿using System;
+using Lab02.Commands;
 
 namespace Lab02
 {
@@ -11,7 +11,7 @@ namespace Lab02
             {
                 return GetParsedCommand(args);
             }
-            catch (Exception ex) when (ex is FormatException | ex is TypeLoadException)
+            catch (Exception)
             {
                 Console.WriteLine("Non-existent command!");
             }
