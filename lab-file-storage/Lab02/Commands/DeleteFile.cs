@@ -4,8 +4,11 @@
     {
         public override bool Execute()
         {
-            _repository.Delete(Options[0]);
+            string fileName = Options[0];
+            _repository.Delete(fileName);
+            ResultMessage = $"File {Options[0]} has been removed";
             return true;
         }
+
     }
 }

@@ -1,18 +1,19 @@
 ﻿using Microsoft.Extensions.Configuration;
+using System;
 
 namespace Lab02
 {
-    internal class ConfigLoader
+    internal static class ConfigLoader
     {
         private static IConfiguration configuration;
-        private const string path = @"C:\Users\r.vorobyov\Desktop\VorobyovMastery\Unit2_Net\Lab\Minsk-Rostislav-Vorobyov\lab-file-storage\Lab02\appsettings.json";
-
+        private static readonly string _path = $"{AppContext.BaseDirectory.Substring(0, AppContext.BaseDirectory.IndexOf("bin"))}appsettings.json";
+        
         public static IConfiguration GetConfiguration()
         {
             if (configuration == null)
             {
                 ConfigurationBuilder builder = new ConfigurationBuilder();
-                JsonConfigurationExtensions.AddJsonFile(builder, path);
+                JsonConfigurationExtensions.AddJsonFile(builder, _path);
                 configuration = builder.Build();
             }
             return configuration;

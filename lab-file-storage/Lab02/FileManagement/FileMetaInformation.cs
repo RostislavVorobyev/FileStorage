@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Lab02
+namespace Lab02.FileManagment
 {
     [Serializable]
     public class FileMetaInformation
@@ -22,9 +22,5 @@ namespace Lab02
             DownloadsCounter = 0;
         }
 
-        public override string ToString()
-        {
-            return $"name: {FileName}, extension: {Extension}, Size: {Size}, CreationDate: {CreationDate.ToShortTimeString()}, Path: {PathToFile}, Downloads: {DownloadsCounter}";
-        }
     }
 }

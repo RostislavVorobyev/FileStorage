@@ -8,12 +8,13 @@ namespace Lab02
     {
         public static void Main()
         {
+            Console.WriteLine(AppContext.BaseDirectory.Substring(0, AppContext.BaseDirectory.IndexOf("bin")));
             Console.WriteLine("Runned");
-            string command = Console.ReadLine();
-            
-            ICommand authorization = CommandParser.Parse(command.Split(" "));
-            authorization.Execute();
-            
+            //Authorize();
+            while (true)
+            {
+                ReadUserCommand();
+            }
 
         }
 
@@ -30,13 +31,31 @@ namespace Lab02
                     try
                     {
                         isAuthorized = authorization.Execute();
+                        Console.WriteLine(authorization.GetResultMessage());
                     }
                     catch (AuthenticationException ex)
                     {
                         Console.WriteLine(ex.Message);
                     }
-
                 }
+            }
+        }
+
+        private static void ReadUserCommand()
+        {
+            try
+            {
+                string command = Console.ReadLine();
+                ICommand authorization = CommandParser.Parse(command.Split(" "));
+                authorization?.Execute();
+                if (authorization?.GetResultMessage() != null)
+                {
+                    Console.WriteLine(authorization.GetResultMessage());
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
         }
 

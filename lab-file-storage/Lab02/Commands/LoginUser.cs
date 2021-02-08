@@ -17,10 +17,12 @@ namespace Lab02.Commands
         {
             if (!OptionsAreValid())
             {
-                throw new AuthenticationException("Invalid command arguments.");
+                throw new AuthenticationException("Invalid login command arguments.");
             }
             string login = Options[1];
             string password = Options[3];
+            bool isAuthorized = login == _login && password == _password;
+            ResultMessage = isAuthorized ? "Success" : "Wrong login or password";
             return login == _login && password == _password;
         }
 

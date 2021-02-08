@@ -4,9 +4,11 @@
     {
         public override bool Execute()
         {
-            _repository.Download(Options[0], Options[1]);
+            string fileName = Options[0];
+            string destinationPath = Options[1];
+            _repository.Download(fileName, destinationPath);
+            ResultMessage = $"The file {Options[0]} has been downloaded";
             return true;
         }
-
     }
 }

@@ -6,6 +6,7 @@ namespace Lab02.Commands
     {
         List<string>  Options { get; }
         bool Execute();
+        string GetResultMessage();
 
     }
 }

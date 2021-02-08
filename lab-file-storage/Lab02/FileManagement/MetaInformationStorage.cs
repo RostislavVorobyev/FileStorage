@@ -4,26 +4,32 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 
-namespace Lab02
+namespace Lab02.FileManagment
 {
     internal class MetaInformationStorage
     {
-        private static Dictionary<string, FileMetaInformation> storage;
-        private readonly string _metainfPath;
-        private readonly string _storagePath;
 
-        public MetaInformationStorage() 
+        private Dictionary<string, FileMetaInformation> storage;
+        private readonly string _metainfPath = $"{AppContext.BaseDirectory.Substring(0, AppContext.BaseDirectory.IndexOf("bin"))}Database\\Metainf.bin";
+        private readonly string _storagePath = $"{AppContext.BaseDirectory.Substring(0, AppContext.BaseDirectory.IndexOf("bin"))}Database";
+
+        public Dictionary<string, FileMetaInformation> Storage
         {
-            _metainfPath = ConfigLoader.GetConfiguration()["Metainf Path"];
-            _storagePath = ConfigLoader.GetConfiguration()["Storage path"];
-            storage = ReadData();
+            get
+            {
+                if (storage == null)
+                {
+                    storage = ReadMetadata();
+                }
+                return storage;
+            }
         }
-        
-        private Dictionary<string, FileMetaInformation> ReadData()
+
+        private Dictionary<string, FileMetaInformation> ReadMetadata()
         {
             try
             {
-                DeserializeMetainformationStorage();
+                return DeserializeMetainformationStorage();
             }
             catch (SerializationException)
             {
@@ -32,12 +38,12 @@ namespace Lab02
             return storage;
         }
 
-        private void DeserializeMetainformationStorage()
+        private Dictionary<string, FileMetaInformation> DeserializeMetainformationStorage()
         {
-            BinaryFormatter bf = new BinaryFormatter();
-            using (FileStream fs = new FileStream(_metainfPath, FileMode.OpenOrCreate))
+            BinaryFormatter metainformationFormatter = new BinaryFormatter();
+            using (FileStream metainformationFileStream = new FileStream(_metainfPath, FileMode.OpenOrCreate))
             {
-                storage = (Dictionary<string, FileMetaInformation>)bf.Deserialize(fs);
+                return (Dictionary<string, FileMetaInformation>)metainformationFormatter.Deserialize(metainformationFileStream);
             }
         }
 
@@ -53,21 +59,30 @@ namespace Lab02
             SaveMetainformationStorage();
         }
 
+        private void SaveMetainformationStorage()
+        {
+            BinaryFormatter bf = new BinaryFormatter();
+            using (FileStream fs = new FileStream(_metainfPath, FileMode.OpenOrCreate))
+            {
+                bf.Serialize(fs, Storage);
+            }
+        }
+
         public void Add(string pathToFile)
         {
             FileMetaInformation metainf = CreateMetaInformation(pathToFile);
-            storage.Add(metainf.FileName, metainf);
+            Storage.Add(metainf.FileName, metainf);
             SaveMetainformationStorage();
         }
 
-        public FileMetaInformation Get (string fileName)
+        public FileMetaInformation Get(string fileName)
         {
-            return storage[fileName];
+            return Storage[fileName];
         }
 
-        public void Delete (string fileName)
+        public void Delete(string fileName)
         {
-            storage.Remove(fileName);
+            Storage.Remove(fileName);
             SaveMetainformationStorage();
         }
 
@@ -80,36 +95,20 @@ namespace Lab02
 
         public void IncrementDownloads(string fileName)
         {
-            storage[fileName].DownloadsCounter++;
+            Storage[fileName].DownloadsCounter++;
             SaveMetainformationStorage();
         }
 
         public void RenameFile(string fileName, string newName)
         {
-            FileMetaInformation meta = storage[fileName];
+            FileMetaInformation meta = Storage[fileName];
             meta.FileName = newName;
             meta.PathToFile = $"{_storagePath}{newName}";
-            storage[newName] = meta;
-            storage.Remove(fileName);
+            Storage[newName] = meta;
+            Storage.Remove(fileName);
             SaveMetainformationStorage();
         }
 
-        private void SaveMetainformationStorage()
-        {
-            BinaryFormatter bf = new BinaryFormatter();
-            using (FileStream fs = new FileStream(_metainfPath, FileMode.OpenOrCreate))
-            {
-                bf.Serialize(fs, storage);
-            }
-        }
 
-        public void PrintMetainf()
-        {
-            Console.WriteLine($"{storage.Count}");
-            foreach (var m in storage)
-            {
-                Console.WriteLine(m.Value.ToString());
-            }
-        }
     }
 }

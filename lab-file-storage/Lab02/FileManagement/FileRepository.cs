@@ -1,21 +1,30 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
-namespace Lab02
+namespace Lab02.FileManagment
 {
     internal class FileRepository
     {
         private readonly MetaInformationStorage _storage;
         private readonly string _storagePath;
+        private readonly long _storageFileSizeRestriction;
 
         public FileRepository()
         {
             _storage = new MetaInformationStorage();
-            _storagePath = ConfigLoader.GetConfiguration()["Storage path"];
+            _storagePath = $"{AppContext.BaseDirectory.Substring(0, AppContext.BaseDirectory.IndexOf("bin"))}Database";
+            _storageFileSizeRestriction = long.Parse(ConfigLoader.GetConfiguration()["Max file size"]);
+
         }
 
         public void Upload(string path)
         {
-            string uploadPath = $"{_storagePath}{Path.GetFileName(path)}";
+            FileInfo file = new FileInfo(path);
+            if (file.Length > _storageFileSizeRestriction)
+            {
+                throw new Exception("File is too big to be uploaded");
+            }
+            string uploadPath = $"{_storagePath}{file.Name}";
             File.Copy(path, uploadPath);
             _storage.Add(path);
         }
@@ -23,7 +32,6 @@ namespace Lab02
         public void Download(string fileName, string destinationPath)
         {
             FileMetaInformation metaInformation = _storage.Get(fileName);
-            string downloadPath = $"{_storagePath}\\{fileName}";
             File.Copy(metaInformation.PathToFile, $"{destinationPath}\\{fileName}");
             _storage.IncrementDownloads(fileName);
         }
@@ -42,9 +50,9 @@ namespace Lab02
             _storage.Delete(fileName);
         }
 
-        public string GetInfo(string fileName)
+        public FileMetaInformation GetInfo(string fileName)
         {
-            return _storage.Get(fileName).ToString();
+            return _storage.Get(fileName);
         }
     }
 }
