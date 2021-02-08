@@ -11,7 +11,7 @@ namespace Lab02.FileManagment
 
         private Dictionary<string, FileMetaInformation> storage;
         private readonly string _metainfPath = $"{AppContext.BaseDirectory.Substring(0, AppContext.BaseDirectory.IndexOf("bin"))}Database\\Metainf.bin";
-        private readonly string _storagePath = $"{AppContext.BaseDirectory.Substring(0, AppContext.BaseDirectory.IndexOf("bin"))}Database";
+        private readonly string _storagePath = $"{AppContext.BaseDirectory.Substring(0, AppContext.BaseDirectory.IndexOf("bin"))}Database\\";
 
         public Dictionary<string, FileMetaInformation> Storage
         {

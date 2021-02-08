@@ -8,14 +8,12 @@ namespace Lab02
     {
         public static void Main()
         {
-            Console.WriteLine(AppContext.BaseDirectory.Substring(0, AppContext.BaseDirectory.IndexOf("bin")));
             Console.WriteLine("Runned");
-            //Authorize();
+            Authorize();
             while (true)
             {
                 ReadUserCommand();
             }
-
         }
 
         private static void Authorize()
@@ -43,6 +41,7 @@ namespace Lab02
 
         private static void ReadUserCommand()
         {
+            Console.WriteLine("Input your command:");
             try
             {
                 string command = Console.ReadLine();

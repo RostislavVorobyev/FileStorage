@@ -14,4 +14,5 @@ To login with deafult login and password execute "user login --l Vorobey --p v"
 storage to the destination-path directory.
 4) file move <source-file-name> <destination-file-name> - rename a file in storage.
 5) file remove <file-name> - remove file-name from storage.
-6)  file info <file-name - display information about the file file-name on console.
+6) file info <file-name - display information about the file file-name on console.
+7) user info - display user information

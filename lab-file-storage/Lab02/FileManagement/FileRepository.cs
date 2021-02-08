@@ -12,9 +12,8 @@ namespace Lab02.FileManagment
         public FileRepository()
         {
             _storage = new MetaInformationStorage();
-            _storagePath = $"{AppContext.BaseDirectory.Substring(0, AppContext.BaseDirectory.IndexOf("bin"))}Database";
+            _storagePath = $"{AppContext.BaseDirectory.Substring(0, AppContext.BaseDirectory.IndexOf("bin"))}Database\\";
             _storageFileSizeRestriction = long.Parse(ConfigLoader.GetConfiguration()["Max file size"]);
-
         }
 
         public void Upload(string path)
@@ -31,22 +30,27 @@ namespace Lab02.FileManagment
 
         public void Download(string fileName, string destinationPath)
         {
-            FileMetaInformation metaInformation = _storage.Get(fileName);
-            File.Copy(metaInformation.PathToFile, $"{destinationPath}\\{fileName}");
+            string pathToStoredFile = BuildStoredFilePath(fileName);
+            File.Copy(pathToStoredFile, $"{destinationPath}\\{fileName}");
             _storage.IncrementDownloads(fileName);
         }
 
         public void Move(string sourceFile, string destinationFile)
         {
-            string pathToFile = _storage.Get(sourceFile).PathToFile;
+            string pathToStoredFile = BuildStoredFilePath(sourceFile);
+            File.Move(pathToStoredFile, $"{_storagePath}{destinationFile}");
             _storage.RenameFile(sourceFile, destinationFile);
-            File.Move(pathToFile, $"{_storagePath}{destinationFile}");
+        }
+
+        private string BuildStoredFilePath(string filename)
+        {
+            return $"{_storagePath}\\{filename}";
         }
 
         public void Delete(string fileName)
         {
-            FileMetaInformation meta = _storage.Get(fileName);
-            File.Delete(meta.PathToFile);
+            string pathToStoredFile = BuildStoredFilePath(fileName);
+            File.Delete(pathToStoredFile);
             _storage.Delete(fileName);
         }
 
