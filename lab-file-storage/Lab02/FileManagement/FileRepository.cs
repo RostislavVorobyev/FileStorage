@@ -21,7 +21,7 @@ namespace Lab02.FileManagment
             FileInfo file = new FileInfo(path);
             if (file.Length > _storageFileSizeRestriction)
             {
-                throw new Exception("File is too big to be uploaded");
+                throw new ArgumentException("File is too big to be uploaded");
             }
             string uploadPath = $"{_storagePath}{file.Name}";
             File.Copy(path, uploadPath);

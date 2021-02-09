@@ -4,16 +4,10 @@ namespace Lab02.Commands
 {
     internal class InfoUser : ConsoleCommand
     {
-        private readonly MetaInformationStorage metainf;
-
-        public InfoUser()
-        {
-            metainf = new MetaInformationStorage();
-        }
 
         public override bool Execute()
         {
-            double storageUsed = GetStorageSize() / 1000000;
+            double storageUsed = (double) (GetStorageSize() / 1000000);
             string userName = ConfigLoader.GetConfiguration()["Login"];
             string creationDate = ConfigLoader.GetConfiguration()["Creation date"];
             ResultMessage = $"login: {userName}\n" +
@@ -24,6 +18,7 @@ namespace Lab02.Commands
 
         private long GetStorageSize()
         {
+            MetaInformationStorage metainf = new MetaInformationStorage();
             long storageUsed = 0;
             foreach (var pair in metainf.Storage)
             {
