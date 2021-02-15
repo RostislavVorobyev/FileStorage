@@ -1,19 +1,19 @@
-﻿using Microsoft.Extensions.Configuration;
-using System;
+﻿using System;
+using Microsoft.Extensions.Configuration;
 
-namespace Lab02
+namespace LabFileStorage.UI.Util
 {
-    internal static class ConfigLoader
+    public static class ConfigLoader
     {
         private static IConfiguration configuration;
         private static readonly string _path = $"{AppContext.BaseDirectory.Substring(0, AppContext.BaseDirectory.IndexOf("bin"))}appsettings.json";
-        
+
         public static IConfiguration GetConfiguration()
         {
             if (configuration == null)
             {
                 ConfigurationBuilder builder = new ConfigurationBuilder();
-                JsonConfigurationExtensions.AddJsonFile(builder, _path);
+                builder.AddJsonFile(_path);
                 configuration = builder.Build();
             }
             return configuration;

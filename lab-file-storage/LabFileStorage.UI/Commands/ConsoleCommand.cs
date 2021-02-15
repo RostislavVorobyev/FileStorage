@@ -1,19 +1,24 @@
 ﻿using System.Collections.Generic;
-using Lab02.FileManagment;
+using LabFileStorage.BLL.Services.Implementations;
+using LabFileStorage.BLL.Services.Intrerfaces;
 
-
-namespace Lab02.Commands
+namespace LabFileStorage.UI.Commands
 {
     internal abstract class ConsoleCommand : ICommand
     {
         public List<string> Options { get; }
         public string ResultMessage { get; protected set; }
-        protected readonly FileRepository _repository;
+        protected readonly IFileService _fileService;
 
         protected ConsoleCommand()
         {
             Options = new List<string>();
-            _repository = new FileRepository();
+            _fileService = new FileService();
+        }
+
+        protected ConsoleCommand(IFileService fileService) : base()
+        {
+            _fileService = fileService;
         }
 
         public virtual string GetResultMessage()

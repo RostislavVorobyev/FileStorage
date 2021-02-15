@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 
-namespace Lab02.Commands
+namespace LabFileStorage.UI.Commands
 {
     public interface ICommand
     {
-        List<string>  Options { get; }
+        List<string> Options { get; }
         bool Execute();
         string GetResultMessage();
 

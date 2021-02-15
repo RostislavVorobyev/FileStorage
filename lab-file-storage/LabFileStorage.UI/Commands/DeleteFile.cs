@@ -1,11 +1,14 @@
-﻿namespace Lab02.Commands
+﻿using LabFileStorage.BLL.Services.Intrerfaces;
+
+namespace LabFileStorage.UI.Commands
 {
     internal class DeleteFile : ConsoleCommand
     {
+        
         public override bool Execute()
         {
             string fileName = Options[0];
-            _repository.Delete(fileName);
+            _fileService.Delete(fileName);
             ResultMessage = $"File {Options[0]} has been removed";
             return true;
         }

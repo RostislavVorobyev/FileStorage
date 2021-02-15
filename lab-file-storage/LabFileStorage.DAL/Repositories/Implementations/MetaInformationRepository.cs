@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using Lab02FileStorageDAL.Entities;
+using LabFileStorage.DAL.Repositories.Intrerfaces;
 
-namespace Lab02.FileManagment
+namespace LabFileStorage.DAL.Repositories.Implementations
 {
-    internal class MetaInformationStorage
+    public class MetaInformationRepository : IMetaInformationRepository
     {
 
         private Dictionary<string, FileMetaInformation> storage;
@@ -109,6 +111,14 @@ namespace Lab02.FileManagment
             SaveMetainformationStorage();
         }
 
-
+        public long GetStorageSize()
+        {
+            long storageUsed = 0;
+            foreach (var pair in Storage)
+            {
+                storageUsed += pair.Value.Size;
+            }
+            return storageUsed;
+        }
     }
 }
