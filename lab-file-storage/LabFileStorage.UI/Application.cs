@@ -1,8 +1,9 @@
 ﻿using System;
-using Lab02.Commands;
 using System.Security.Authentication;
+using LabFileStorage.UI.Commands;
+using LabFileStorage.UI.Util;
 
-namespace Lab02
+namespace LabFileStorage.UI
 {
     public class Application
     {

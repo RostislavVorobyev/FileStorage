@@ -1,7 +1,7 @@
 ﻿using System;
-using Lab02.Commands;
+using LabFileStorage.UI.Commands;
 
-namespace Lab02
+namespace LabFileStorage.UI.Util
 {
     internal static class CommandParser
     {
@@ -11,7 +11,7 @@ namespace Lab02
             {
                 return GetParsedCommand(args);
             }
-            catch (Exception)
+            catch 
             {
                 Console.WriteLine("Non-existent command!");
             }
@@ -21,7 +21,7 @@ namespace Lab02
         private static ICommand GetParsedCommand(string[] args)
         {
             string commandName = args[1] + args[0];
-            Type type = Type.GetType($"Lab02.Commands.{commandName}", true, true);
+            Type type = Type.GetType($"LabFileStorage.UI.Commands.{commandName}", true, true);
             ICommand parsedCommand = (ICommand)Activator.CreateInstance(type);
             for (int i = 2; i < args.Length; i++)
             {

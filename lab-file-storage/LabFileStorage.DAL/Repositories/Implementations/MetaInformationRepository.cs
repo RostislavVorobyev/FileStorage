@@ -3,15 +3,17 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using Lab02FileStorageDAL.Entities;
+using LabFileStorage.DAL.Repositories.Interfaces;
 
-namespace Lab02.FileManagment
+namespace LabFileStorage.DAL.Repositories.Implementations
 {
-    internal class MetaInformationStorage
+    public class MetaInformationRepository : IMetaInformationRepository
     {
 
         private Dictionary<string, FileMetaInformation> storage;
-        private readonly string _metainfPath = $"{AppContext.BaseDirectory.Substring(0, AppContext.BaseDirectory.IndexOf("bin"))}Database\\Metainf.bin";
-        private readonly string _storagePath = $"{AppContext.BaseDirectory.Substring(0, AppContext.BaseDirectory.IndexOf("bin"))}Database\\";
+        private readonly string _metainfPath;
+        private readonly string _storagePath;
 
         public Dictionary<string, FileMetaInformation> Storage
         {
@@ -23,6 +25,12 @@ namespace Lab02.FileManagment
                 }
                 return storage;
             }
+        }
+
+        public MetaInformationRepository()
+        {
+            _storagePath = $@"{AppContext.BaseDirectory.Substring(0, AppContext.BaseDirectory.IndexOf("LabFileStorage.UI"))}Database\";
+            _metainfPath = $@"{_storagePath}\Metainf.bin";
         }
 
         private Dictionary<string, FileMetaInformation> ReadMetadata()
@@ -109,6 +117,14 @@ namespace Lab02.FileManagment
             SaveMetainformationStorage();
         }
 
-
+        public long GetStorageSize()
+        {
+            long storageUsed = 0;
+            foreach (var pair in Storage)
+            {
+                storageUsed += pair.Value.Size;
+            }
+            return storageUsed;
+        }
     }
 }

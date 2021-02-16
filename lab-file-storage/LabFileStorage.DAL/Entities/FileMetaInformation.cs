@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Lab02.FileManagment
+namespace Lab02FileStorageDAL.Entities
 {
     [Serializable]
     public class FileMetaInformation
@@ -12,7 +12,7 @@ namespace Lab02.FileManagment
         public DateTime CreationDate { get; set; }
         public uint DownloadsCounter { get; set; }
 
-        public FileMetaInformation(string fileName, string pathToFile, string extension, long size, DateTime creationDate )
+        public FileMetaInformation(string fileName, string pathToFile, string extension, long size, DateTime creationDate)
         {
             FileName = fileName;
             PathToFile = pathToFile;

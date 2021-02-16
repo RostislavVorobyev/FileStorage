@@ -1,13 +1,14 @@
 ﻿using System.Security.Authentication;
+using LabFileStorage.UI.Util;
 
-namespace Lab02.Commands
+namespace LabFileStorage.UI.Commands
 {
     internal class LoginUser : ConsoleCommand
     {
         private readonly string _login;
         private readonly string _password;
-         
-        public LoginUser() : base()
+
+        public LoginUser()
         {
             _login = ConfigLoader.GetConfiguration()["Login"];
             _password = ConfigLoader.GetConfiguration()["Password"];
