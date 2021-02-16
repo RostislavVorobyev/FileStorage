@@ -22,9 +22,5 @@ namespace Lab02FileStorageDAL.Entities
             DownloadsCounter = 0;
         }
 
-        public override string ToString()
-        {
-            return base.ToString();
-        }
     }
 }

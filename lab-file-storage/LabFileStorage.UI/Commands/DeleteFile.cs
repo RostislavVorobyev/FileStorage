@@ -1,6 +1,4 @@
-﻿using LabFileStorage.BLL.Services.Intrerfaces;
-
-namespace LabFileStorage.UI.Commands
+﻿namespace LabFileStorage.UI.Commands
 {
     internal class DeleteFile : ConsoleCommand
     {

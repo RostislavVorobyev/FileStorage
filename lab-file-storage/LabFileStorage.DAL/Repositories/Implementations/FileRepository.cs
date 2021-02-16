@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using LabFileStorage.DAL.Repositories.Intrerfaces;
+using LabFileStorage.DAL.Repositories.Interfaces;
 
 namespace LabFileStorage.DAL.Repositories.Implementations
 {
@@ -10,20 +10,20 @@ namespace LabFileStorage.DAL.Repositories.Implementations
 
         public FileRepository()
         {
-            _storagePath = $"{AppContext.BaseDirectory.Substring(0, AppContext.BaseDirectory.IndexOf("bin"))}Database\\";
+            _storagePath = $@"{AppContext.BaseDirectory.Substring(0, AppContext.BaseDirectory.IndexOf("LabFileStorage.UI"))}Database\";
         }
 
-        public void Upload(string path)
+        public void Upload(string pathToFile)
         {
-            string fileName = Path.GetFileName(path);
+            string fileName = Path.GetFileName(pathToFile);
             string uploadPath = $"{_storagePath}{fileName}";
-            File.Copy(path, uploadPath);
+            File.Copy(pathToFile, uploadPath);
         }
 
-        public void Download(string fileName, string destinationPath)
+        public void Download(string file, string downloadPath)
         {
-            string pathToStoredFile = BuildStoredFilePath(fileName);
-            File.Copy(pathToStoredFile, $"{destinationPath}\\{fileName}");
+            string pathToStoredFile = BuildStoredFilePath(file);
+            File.Copy(pathToStoredFile, $@"{downloadPath}\{file}");
         }
 
         public void Move(string sourceFile, string destinationFile)
@@ -32,9 +32,9 @@ namespace LabFileStorage.DAL.Repositories.Implementations
             File.Move(pathToStoredFile, $"{_storagePath}{destinationFile}");
         }
 
-        private string BuildStoredFilePath(string filename)
+        private string BuildStoredFilePath(string fileName)
         {
-            return $"{_storagePath}\\{filename}";
+            return $@"{_storagePath}\{fileName}";
         }
 
         public void Delete(string fileName)

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using LabFileStorage.BLL.Services.Implementations;
-using LabFileStorage.BLL.Services.Intrerfaces;
+using LabFileStorage.BLL.Services.Interfaces;
 
 namespace LabFileStorage.UI.Commands
 {

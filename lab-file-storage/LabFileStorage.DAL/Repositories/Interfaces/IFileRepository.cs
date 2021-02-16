@@ -1,6 +1,6 @@
-﻿namespace LabFileStorage.BLL.Services.Intrerfaces
+﻿namespace LabFileStorage.DAL.Repositories.Interfaces
 {
-    public interface IFileService
+    public interface IFileRepository
     {
         void Upload(string pathToFile);
 
@@ -10,8 +10,5 @@
 
         void Delete(string fileName);
 
-        string GetInfo(string fileName);
-
-        long GetStorageSize();
     }
 }

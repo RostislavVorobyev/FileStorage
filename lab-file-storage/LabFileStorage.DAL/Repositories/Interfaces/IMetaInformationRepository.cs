@@ -1,7 +1,7 @@
 ﻿using Lab02FileStorageDAL.Entities;
 using System.Collections.Generic;
 
-namespace LabFileStorage.DAL.Repositories.Intrerfaces
+namespace LabFileStorage.DAL.Repositories.Interfaces
 {
     public interface IMetaInformationRepository
     {

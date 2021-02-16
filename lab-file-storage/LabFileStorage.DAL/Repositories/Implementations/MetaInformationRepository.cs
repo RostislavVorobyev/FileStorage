@@ -4,7 +4,7 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using Lab02FileStorageDAL.Entities;
-using LabFileStorage.DAL.Repositories.Intrerfaces;
+using LabFileStorage.DAL.Repositories.Interfaces;
 
 namespace LabFileStorage.DAL.Repositories.Implementations
 {
@@ -12,8 +12,8 @@ namespace LabFileStorage.DAL.Repositories.Implementations
     {
 
         private Dictionary<string, FileMetaInformation> storage;
-        private readonly string _metainfPath = $"{AppContext.BaseDirectory.Substring(0, AppContext.BaseDirectory.IndexOf("bin"))}Database\\Metainf.bin";
-        private readonly string _storagePath = $"{AppContext.BaseDirectory.Substring(0, AppContext.BaseDirectory.IndexOf("bin"))}Database\\";
+        private readonly string _metainfPath;
+        private readonly string _storagePath;
 
         public Dictionary<string, FileMetaInformation> Storage
         {
@@ -25,6 +25,12 @@ namespace LabFileStorage.DAL.Repositories.Implementations
                 }
                 return storage;
             }
+        }
+
+        public MetaInformationRepository()
+        {
+            _storagePath = $@"{AppContext.BaseDirectory.Substring(0, AppContext.BaseDirectory.IndexOf("LabFileStorage.UI"))}Database\";
+            _metainfPath = $@"{_storagePath}\Metainf.bin";
         }
 
         private Dictionary<string, FileMetaInformation> ReadMetadata()

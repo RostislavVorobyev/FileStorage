@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
-using LabFileStorage.BLL.Services.Intrerfaces;
+using LabFileStorage.BLL.Services.Interfaces;
 using LabFileStorage.DAL.Repositories.Implementations;
-using LabFileStorage.DAL.Repositories.Intrerfaces;
+using LabFileStorage.DAL.Repositories.Interfaces;
 
 namespace LabFileStorage.BLL.Services.Implementations
 {
@@ -32,7 +32,7 @@ namespace LabFileStorage.BLL.Services.Implementations
             _metaInformationRepository.Add(pathToFile);
         }
 
-        private bool FileExceedsSizeLimit (string pathToFile)
+        private bool FileExceedsSizeLimit(string pathToFile)
         {
             long fileSizeRestriction = 10000;
             FileInfo file = new FileInfo(pathToFile);
@@ -47,7 +47,11 @@ namespace LabFileStorage.BLL.Services.Implementations
 
         public string GetInfo(string fileName)
         {
-            return _metaInformationRepository.Get(fileName).ToString();
+            var meta = _metaInformationRepository.Get(fileName);
+            return $"name: {meta.FileName}\n" +
+                $"extension: {meta.Extension.Substring(1)}\n" +
+                $"creation date: {meta.CreationDate.ToString("yyyy-MM-dd")}\n" +
+                "login: Vorobey";
         }
 
         public void Move(string sourceFile, string destinationFile)

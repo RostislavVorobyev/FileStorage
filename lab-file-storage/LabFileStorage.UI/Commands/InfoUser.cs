@@ -6,7 +6,7 @@ namespace LabFileStorage.UI.Commands
     {
         public override bool Execute()
         {
-            double storageUsed = _fileService.GetStorageSize() / 1000000;
+            double storageUsed = (double)(_fileService.GetStorageSize() / 1000000);
             string userName = ConfigLoader.GetConfiguration()["Login"];
             string creationDate = ConfigLoader.GetConfiguration()["Creation date"];
             ResultMessage = $"login: {userName}\n" +
