@@ -37,7 +37,7 @@ namespace LabFileStorage.UI
                     try
                     {
                         isAuthorized = authorization.Execute();
-                        Console.WriteLine(authorization.GetResultMessage());
+                        Console.WriteLine(authorization.ResultMessage);
                     }
                     catch (AuthenticationException ex)
                     {
@@ -55,9 +55,9 @@ namespace LabFileStorage.UI
                 string command = Console.ReadLine();
                 ICommand authorization = CommandParser.Parse(command.Split(" "));
                 authorization?.Execute();
-                if (authorization?.GetResultMessage() != null)
+                if (authorization?.ResultMessage != null)
                 {
-                    Console.WriteLine(authorization.GetResultMessage());
+                    Console.WriteLine(authorization.ResultMessage);
                 }
             }
             catch (Exception ex)
