@@ -1,4 +1,5 @@
 ﻿using System.Security.Authentication;
+using LabFileStorage.BLL.Services.Interfaces;
 using LabFileStorage.UI.Util;
 
 namespace LabFileStorage.UI.Commands
@@ -8,7 +9,7 @@ namespace LabFileStorage.UI.Commands
         private readonly string _login;
         private readonly string _password;
 
-        public LoginUser()
+        public LoginUser(IFileService fileService) : base(fileService)
         {
             _login = ConfigLoader.GetConfiguration()["Login"];
             _password = ConfigLoader.GetConfiguration()["Password"];

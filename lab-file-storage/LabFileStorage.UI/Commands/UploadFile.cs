@@ -1,7 +1,13 @@
-﻿namespace LabFileStorage.UI.Commands
+﻿using LabFileStorage.BLL.Services.Interfaces;
+
+namespace LabFileStorage.UI.Commands
 {
     internal class UploadFile : ConsoleCommand
     {
+        public UploadFile(IFileService fileService) : base(fileService)
+        {
+        }
+
         public override bool Execute()
         {
             _fileService.Upload(Options[0]);

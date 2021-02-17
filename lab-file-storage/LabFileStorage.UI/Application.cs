@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Security.Authentication;
+using LabFileStorage.DAL.Repositories.Implementations;
+using LabFileStorage.DAL.Repositories.Interfaces;
 using LabFileStorage.UI.Commands;
 using LabFileStorage.UI.Util;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace LabFileStorage.UI
 {
@@ -9,6 +12,10 @@ namespace LabFileStorage.UI
     {
         public static void Main()
         {
+            var serviceProvider = new ServiceCollection()
+            .AddSingleton<IFileRepository, FileRepository>()
+            .BuildServiceProvider();
+
             Console.WriteLine("Runned");
             Authorize();
             while (true)
