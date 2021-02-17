@@ -6,7 +6,6 @@ namespace LabFileStorage.UI.Commands
     {
         List<string> Options { get; }
         bool Execute();
-        string ResultMessage { get; set; }
-
+        public string GetResultMessage();
     }
 }
