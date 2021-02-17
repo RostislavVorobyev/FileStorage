@@ -6,15 +6,9 @@ namespace LabFileStorage.UI.Commands
 {
     internal abstract class ConsoleCommand : ICommand
     {
-        public List<string> Options { get; }
+        public List<string> Options { get; } = new List<string>();
         public string ResultMessage { get; protected set; }
         protected readonly IFileService _fileService;
-
-        protected ConsoleCommand()
-        {
-            Options = new List<string>();
-            _fileService = new FileService();
-        }
 
         protected ConsoleCommand(IFileService fileService) : base()
         {

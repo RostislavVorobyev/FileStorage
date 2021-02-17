@@ -1,9 +1,14 @@
-﻿using LabFileStorage.UI.Util;
+﻿using LabFileStorage.BLL.Services.Interfaces;
+using LabFileStorage.UI.Util;
 
 namespace LabFileStorage.UI.Commands
 {
     internal class InfoUser : ConsoleCommand
     {
+        public InfoUser(IFileService fileService) : base(fileService)
+        {
+        }
+
         public override bool Execute()
         {
             double storageUsed = (double)(_fileService.GetStorageSize() / 1000000);
