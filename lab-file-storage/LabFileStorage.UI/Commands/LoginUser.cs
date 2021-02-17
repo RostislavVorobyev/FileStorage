@@ -1,21 +1,26 @@
-﻿using System.Security.Authentication;
+﻿using System.Collections.Generic;
+using System.Security.Authentication;
 using LabFileStorage.BLL.Services.Interfaces;
 using LabFileStorage.UI.Util;
 
 namespace LabFileStorage.UI.Commands
 {
-    internal class LoginUser : ConsoleCommand
+    internal class LoginUser : ICommand
     {
         private readonly string _login;
         private readonly string _password;
 
-        public LoginUser(IFileService fileService) : base(fileService)
+        public LoginUser()
         {
             _login = ConfigLoader.GetConfiguration()["Login"];
             _password = ConfigLoader.GetConfiguration()["Password"];
         }
 
-        public override bool Execute()
+        public List<string> Options { get; } = new List<string>();
+
+        public string ResultMessage { get; set; }
+
+        public bool Execute()
         {
             if (!OptionsAreValid())
             {

@@ -1,14 +1,20 @@
 ﻿using LabFileStorage.BLL.Services.Interfaces;
+using System.Collections.Generic;
 
 namespace LabFileStorage.UI.Commands
 {
-    internal class DeleteFile : ConsoleCommand
+    internal class DeleteFile : ICommand
     {
-        public DeleteFile(IFileService fileService) : base(fileService)
-        {
-        }
+        private IFileService _fileService;
 
-        public override bool Execute()
+        public List<string> Options { get; set; }
+        public string ResultMessage { get; set; }
+
+        public DeleteFile(IFileService fileService)
+        {
+            _fileService = fileService;
+        }
+        public bool Execute()
         {
             string fileName = Options[0];
             _fileService.Delete(fileName);
@@ -16,5 +22,9 @@ namespace LabFileStorage.UI.Commands
             return true;
         }
 
+        public string GetResultMessage()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
