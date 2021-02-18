@@ -5,7 +5,7 @@ namespace LabFileStorage.UI.Commands
 {
     internal class UploadFile : ICommand
     {
-        private IFileService _fileService;
+        private readonly IFileService _fileService;
         private bool _isSucceeded;
 
         public UploadFile(IFileService fileService)
@@ -25,7 +25,7 @@ namespace LabFileStorage.UI.Commands
         public string GetResultMessage()
         {
             string resultMessage = _isSucceeded ? $"The file {Options[0]} has been uploaded" : "Error";
-            throw new System.NotImplementedException();
+            return resultMessage;
         }
     }
 

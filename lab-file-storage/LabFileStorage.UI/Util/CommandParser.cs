@@ -1,59 +1,76 @@
 ﻿using System;
-using LabFileStorage.BLL.Services.Implementations;
+using System.Text.RegularExpressions;
 using LabFileStorage.BLL.Services.Interfaces;
-using LabFileStorage.DAL.Repositories.Implementations;
-using LabFileStorage.DAL.Repositories.Interfaces;
 using LabFileStorage.UI.Commands;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace LabFileStorage.UI.Util
 {
-    internal static class CommandParser
+    internal class CommandParser
     {
-        static ServiceProvider Provider => GetServiceProvider();
+        private readonly IFileService _fileService;
 
-        static internal ServiceProvider GetServiceProvider()
+        public CommandParser(IFileService fileService)
         {
-            ServiceProvider serviceProvider = new ServiceCollection().
-                AddSingleton<IFileRepository, FileRepository>().
-                AddSingleton<IMetaInformationRepository, MetaInformationRepository>().
-                AddSingleton<IFileService, FileService>().
-                AddTransient<InfoFile>().
-                AddTransient<DeleteFile>().
-                AddTransient<DownloadFile>().
-                AddTransient<InfoUser>().
-                AddTransient<LoginUser>().
-                AddTransient<MoveFile>().
-                AddTransient<UploadFile>().
-                BuildServiceProvider();
-            return serviceProvider;
+            _fileService = fileService;
         }
 
-        internal static ICommand Parse(string[] args)
+        internal ICommand Parse(string userInput)
         {
             try
             {
-                return GetParsedCommand(args);
+                var inputAtguments = SplitInputArguments(userInput);
+                return GetParsedCommand(inputAtguments);
             }
-            catch
+            catch (Exception ex)
             {
-                Console.WriteLine("Non-existent command!");
+                Console.WriteLine(ex.Message);
             }
             return null;
         }
 
-        private static ICommand GetParsedCommand(string[] args)
+        private string[] SplitInputArguments(string userInput) {
+            userInput = userInput.Trim();
+            return Regex.Split(userInput, @"\s+");
+        }
+
+        private ICommand GetParsedCommand(string[] args)
         {
-            string commandName = args[1] + args[0];
-            Type type = Type.GetType($"LabFileStorage.UI.Commands.{commandName}", true, true);
-            ICommand parsedCommand = (ICommand)Provider.GetRequiredService(type);
+            if (args.Length < 2)
+            {
+                throw new Exception("Illegal input");
+            }
+            string commandName = (args[0] + args[1]).ToLower();
+            ICommand parsedCommand;
+            switch (commandName)
+            {
+                case "filedelete":
+                    parsedCommand = new DeleteFile(_fileService);
+                    break;
+                case "filedownload":
+                    parsedCommand = new DownloadFile(_fileService);
+                    break;
+                case "fileinfo":
+                    parsedCommand = new InfoFile(_fileService);
+                    break;
+                case "userlogin":
+                    parsedCommand = new LoginUser();
+                    break;
+                case "filemove":
+                    parsedCommand = new MoveFile(_fileService);
+                    break;
+                case "fileupload":
+                    parsedCommand = new UploadFile(_fileService);
+                    break;
+                case "userinfo":
+                    parsedCommand = new InfoUser(_fileService);
+                    break;
+                default: throw new Exception("Non-existent command!");
+            }
             for (int i = 2; i < args.Length; i++)
             {
                 parsedCommand.Options.Add(args[i]);
             }
             return parsedCommand;
         }
-
-        
     }
 }

@@ -5,7 +5,7 @@ namespace LabFileStorage.UI.Commands
 {
     internal class DeleteFile : ICommand
     {
-        private IFileService _fileService;
+        private readonly IFileService _fileService;
 
         public List<string> Options { get; set; } = new List<string>();
         private bool _isSucceeded;

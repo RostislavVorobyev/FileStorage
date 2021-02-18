@@ -5,7 +5,7 @@ namespace LabFileStorage.UI.Commands
 {
     internal class MoveFile : ICommand
     {
-        private IFileService _fileService;
+        private readonly IFileService _fileService;
         private bool _isSucceeded;
         public List<string> Options { get; } = new List<string>();
 
