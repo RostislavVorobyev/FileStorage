@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Security.Authentication;
+using LabFileStorage.BLL.Services.Implementations;
+using LabFileStorage.BLL.Services.Interfaces;
 using LabFileStorage.DAL.Repositories.Implementations;
 using LabFileStorage.DAL.Repositories.Interfaces;
 using LabFileStorage.UI.Commands;
@@ -10,12 +12,11 @@ namespace LabFileStorage.UI
 {
     public class Application
     {
+        static CommandParser parser;
         public static void Main()
         {
-            var serviceProvider = new ServiceCollection()
-            .AddSingleton<IFileRepository, FileRepository>()
-            .BuildServiceProvider();
-
+            ServiceProvider serviceProvider = ConfigureServiceProvider();
+            parser = serviceProvider.GetRequiredService<CommandParser>();
             Console.WriteLine("Runned");
             Authorize();
             while (true)
@@ -31,7 +32,7 @@ namespace LabFileStorage.UI
             {
                 Console.WriteLine("Authorize to use the programm.");
                 string command = Console.ReadLine();
-                ICommand authorization = CommandParser.Parse(command.Split(" "));
+                ICommand authorization = parser.Parse(command);
                 if (authorization?.GetType() == typeof(LoginUser))
                 {
                     try
@@ -53,7 +54,7 @@ namespace LabFileStorage.UI
             try
             {
                 string command = Console.ReadLine();
-                ICommand authorization = CommandParser.Parse(command.Split(" "));
+                ICommand authorization = parser.Parse(command);
                 authorization?.Execute();
                 if (authorization?.GetResultMessage() != null)
                 {
@@ -64,6 +65,17 @@ namespace LabFileStorage.UI
             {
                 Console.WriteLine(ex.Message);
             }
+        }
+
+        internal static ServiceProvider ConfigureServiceProvider()
+        {
+            ServiceProvider serviceProvider = new ServiceCollection()
+                .AddSingleton<IFileRepository, FileRepository>()
+                .AddSingleton<IMetaInformationRepository, MetaInformationRepository>()
+                .AddSingleton<IFileService, FileService>()
+                .AddSingleton<CommandParser>()
+                .BuildServiceProvider();
+            return serviceProvider;
         }
 
     }

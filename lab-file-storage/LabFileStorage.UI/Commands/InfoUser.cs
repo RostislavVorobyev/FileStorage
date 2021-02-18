@@ -7,7 +7,7 @@ namespace LabFileStorage.UI.Commands
 {
     internal class InfoUser : ICommand
     {
-        private IFileService _fileService;
+        private readonly IFileService _fileService;
         private bool _isSucceeded;
         private UserViewModel userInfo;
 

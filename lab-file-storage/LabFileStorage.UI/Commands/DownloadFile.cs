@@ -5,7 +5,7 @@ namespace LabFileStorage.UI.Commands
 {
     internal class DownloadFile : ICommand
     {
-        IFileService _fileService;
+        private readonly IFileService _fileService;
         private bool _isSucceeded;
         public List<string> Options { get; set; } = new List<string>();
 
