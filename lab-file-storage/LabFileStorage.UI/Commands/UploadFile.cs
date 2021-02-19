@@ -1,31 +1,24 @@
-﻿using LabFileStorage.BLL.Services.Interfaces;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using LabFileStorage.BLL.Services.Interfaces;
 
 namespace LabFileStorage.UI.Commands
 {
     internal class UploadFile : ICommand
     {
         private readonly IFileService _fileService;
-        private bool _isSucceeded;
+        private readonly List<string> _options;
 
-        public UploadFile(IFileService fileService)
+        public UploadFile(IFileService fileService, List<string> options)
         {
             _fileService = fileService;
+            _options = options;
         }
 
-        public List<string> Options { get; } = new List<string>();
-
-        public bool Execute()
+        public string Execute()
         {
-            _fileService.Upload(Options[0]);
-            _isSucceeded = true;
-            return _isSucceeded;
-        }
+            _fileService.Upload(_options[0]);
 
-        public string GetResultMessage()
-        {
-            string resultMessage = _isSucceeded ? $"The file {Options[0]} has been uploaded" : "Error";
-            return resultMessage;
+            return $"The file {_options[0]} has been uploaded";
         }
     }
 

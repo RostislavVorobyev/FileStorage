@@ -1,33 +1,25 @@
-﻿using LabFileStorage.BLL.Services.Interfaces;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using LabFileStorage.BLL.Services.Interfaces;
 
 namespace LabFileStorage.UI.Commands
 {
     internal class DeleteFile : ICommand
     {
         private readonly IFileService _fileService;
+        private readonly List<string> _options;
 
-        public List<string> Options { get; set; } = new List<string>();
-        private bool _isSucceeded;
-
-        public DeleteFile(IFileService fileService)
+        public DeleteFile(IFileService fileService, List<string> options)
         {
             _fileService = fileService;
-            Options = new List<string>();
+            _options = options;
         }
 
-        public bool Execute()
+        public string Execute()
         {
-            string fileName = Options[0];
+            string fileName = _options[0];
             _fileService.Delete(fileName);
-            _isSucceeded = true;
-            return _isSucceeded;
-        }
 
-        public string GetResultMessage()
-        {
-            string resultMessage = _isSucceeded ? $"File {Options[0]} has been removed" : "Error";
-            return resultMessage;
+            return $"File {_options[0]} has been removed";
         }
     }
 }

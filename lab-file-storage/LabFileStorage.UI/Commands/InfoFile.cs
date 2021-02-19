@@ -1,35 +1,24 @@
-﻿using LabFileStorage.BLL.Services.Interfaces;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using LabFileStorage.BLL.Services.Interfaces;
 
 namespace LabFileStorage.UI.Commands
 {
     internal class InfoFile : ICommand
     {
         private readonly IFileService _fileService;
-        private bool _isSucceeded;
-        private string _fileInfo;
+        private readonly List<string> _options;
 
-
-        public InfoFile(IFileService fileService) 
+        public InfoFile(IFileService fileService, List<string> options)
         {
             _fileService = fileService;
+            _options = options;
         }
 
-        public List<string> Options { get; set; } = new List<string>();
-
-
-        public bool Execute()
+        public string Execute()
         {
-            string fileName = Options[0];
-            _isSucceeded = true;
-            _fileInfo = _fileService.GetInfo(fileName);
-            return _isSucceeded;
-        }
+            string fileName = _options[0];
 
-        public string GetResultMessage()
-        {
-            string resultMessage = _isSucceeded ? _fileInfo : "Error";
-            return resultMessage;
+            return _fileService.GetInfo(fileName);
         }
     }
 }

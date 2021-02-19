@@ -1,30 +1,24 @@
-﻿using LabFileStorage.BLL.Services.Interfaces;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using LabFileStorage.BLL.Services.Interfaces;
 
 namespace LabFileStorage.UI.Commands
 {
     internal class MoveFile : ICommand
     {
         private readonly IFileService _fileService;
-        private bool _isSucceeded;
-        public List<string> Options { get; } = new List<string>();
+        private readonly List<string> _options;
 
-        public MoveFile(IFileService fileService)
+        public MoveFile(IFileService fileService, List<string> options)
         {
             _fileService = fileService;
+            _options = options;
         }
 
-        public bool Execute()
+        public string Execute()
         {
-            _fileService.Move(Options[0], Options[1]);
-            _isSucceeded = true;
-            return _isSucceeded;
-        }
+            _fileService.Move(_options[0], _options[1]);
 
-        public string GetResultMessage()
-        {
-            string resultMessage = $"The file {Options[0]} has been moved to {Options[1]}";
-            return resultMessage;
+            return $"The file {_options[0]} has been moved to {_options[1]}";
         }
     }
 }

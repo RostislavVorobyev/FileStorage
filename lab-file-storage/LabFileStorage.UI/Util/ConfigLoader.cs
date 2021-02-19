@@ -16,8 +16,8 @@ namespace LabFileStorage.UI.Util
                 builder.AddJsonFile(_path);
                 configuration = builder.Build();
             }
+
             return configuration;
         }
-
     }
 }
