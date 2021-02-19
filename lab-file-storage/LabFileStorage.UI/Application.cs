@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Security.Authentication;
 using LabFileStorage.BLL.Services.Implementations;
 using LabFileStorage.BLL.Services.Interfaces;
 using LabFileStorage.DAL.Repositories.Implementations;
@@ -8,15 +7,18 @@ using LabFileStorage.UI.Commands;
 using LabFileStorage.UI.Util;
 using Microsoft.Extensions.DependencyInjection;
 
+
 namespace LabFileStorage.UI
 {
     public class Application
     {
-        static CommandParser parser;
+        static FileCommandParser parser;
+        static AuthorizeCommandParser authParser;
         public static void Main()
         {
             ServiceProvider serviceProvider = ConfigureServiceProvider();
-            parser = serviceProvider.GetRequiredService<CommandParser>();
+            parser = serviceProvider.GetRequiredService<FileCommandParser>();
+            authParser = serviceProvider.GetRequiredService<AuthorizeCommandParser>();
             Console.WriteLine("Runned");
             Authorize();
             while (true)
@@ -27,23 +29,19 @@ namespace LabFileStorage.UI
 
         private static void Authorize()
         {
-            bool isAuthorized = false;
-            while (!isAuthorized)
+            Console.WriteLine("Authorize to use the programm.");
             {
-                Console.WriteLine("Authorize to use the programm.");
-                string command = Console.ReadLine();
-                ICommand authorization = parser.Parse(command);
-                if (authorization?.GetType() == typeof(LoginUser))
+                try
                 {
-                    try
-                    {
-                        isAuthorized = authorization.Execute();
-                        Console.WriteLine(authorization.GetResultMessage());
-                    }
-                    catch (AuthenticationException ex)
-                    {
-                        Console.WriteLine(ex.Message);
-                    }
+                    string userInput = Console.ReadLine();
+                    ICommand authorizationCommand = authParser.Parse(userInput);
+                    string authiorizationResult = authorizationCommand.Execute();
+                    Console.WriteLine(authiorizationResult);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    Authorize();
                 }
             }
         }
@@ -53,12 +51,12 @@ namespace LabFileStorage.UI
             Console.WriteLine("Input your command:");
             try
             {
-                string command = Console.ReadLine();
-                ICommand authorization = parser.Parse(command);
-                authorization?.Execute();
-                if (authorization?.GetResultMessage() != null)
+                string userInput = Console.ReadLine();
+                ICommand command = parser.Parse(userInput);
+                string commandResult = command.Execute();
+                if (commandResult != null)
                 {
-                    Console.WriteLine(authorization.GetResultMessage());
+                    Console.WriteLine(commandResult);
                 }
             }
             catch (Exception ex)
@@ -73,11 +71,11 @@ namespace LabFileStorage.UI
                 .AddSingleton<IFileRepository, FileRepository>()
                 .AddSingleton<IMetaInformationRepository, MetaInformationRepository>()
                 .AddSingleton<IFileService, FileService>()
-                .AddSingleton<CommandParser>()
+                .AddSingleton<FileCommandParser>()
+                .AddSingleton<AuthorizeCommandParser>()
                 .BuildServiceProvider();
             return serviceProvider;
         }
-
     }
 }
 

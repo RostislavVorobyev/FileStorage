@@ -1,6 +1,7 @@
-﻿using LabFileStorage.UI.Util;
+﻿using System;
 using System.Collections.Generic;
 using System.Security.Authentication;
+using LabFileStorage.UI.Util;
 
 namespace LabFileStorage.UI.Commands
 {
@@ -8,39 +9,35 @@ namespace LabFileStorage.UI.Commands
     {
         private readonly string _login;
         private readonly string _password;
-        private bool _isSucceeded;
+        private readonly List<string> _options;
 
-        public LoginUser()
+        public LoginUser(List<string> options)
         {
             _login = ConfigLoader.GetConfiguration()["Login"];
             _password = ConfigLoader.GetConfiguration()["Password"];
+            _options = options;
         }
-
-        public List<string> Options { get; } = new List<string>();
 
         public string ResultMessage { get; set; }
 
-        public bool Execute()
+        public string Execute()
         {
             if (!OptionsAreValid())
             {
                 throw new AuthenticationException("Invalid login command arguments.");
             }
-            string login = Options[1];
-            string password = Options[3];
-            _isSucceeded = login == _login && password == _password;
-            return _isSucceeded;
+            string login = _options[1];
+            string password = _options[3];
+            if (login == _login && password == _password)
+            {
+                return "Success";
+            }
+            throw new Exception("Wrong login or password");
         }
 
         private bool OptionsAreValid()
         {
-            return Options.Count == 4 && Options[0] == "--l" && Options[2] == "--p";
-        }
-
-        public string GetResultMessage()
-        {
-            string resultMessage = _isSucceeded ? "Success" : "Wrong login or password";
-            return resultMessage;
+            return _options.Count == 4 && _options[0] == "--l" && _options[2] == "--p";
         }
     }
 }
