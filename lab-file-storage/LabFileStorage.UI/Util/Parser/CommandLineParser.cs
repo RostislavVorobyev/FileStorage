@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using LabFileStorage.UI.Commands;
 
-namespace LabFileStorage.UI.Util
+namespace LabFileStorage.UI.Util.Parser
 {
     abstract class CommandLineParser
     {
