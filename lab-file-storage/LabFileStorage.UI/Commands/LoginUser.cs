@@ -18,21 +18,26 @@ namespace LabFileStorage.UI.Commands
             _options = options;
         }
 
-        public string ResultMessage { get; set; }
-
         public string Execute()
         {
             if (!OptionsAreValid())
             {
                 throw new AuthenticationException("Invalid login command arguments.");
             }
+
             string login = _options[1];
             string password = _options[3];
-            if (login == _login && password == _password)
+            CheckLoginAndPassword(login, password);
+
+            return "Succsess";
+        }
+
+        private void CheckLoginAndPassword(string login, string password)
+        {
+            if (!(login == _login && password == _password))
             {
-                return "Success";
+                throw new Exception("Wrong login or password");
             }
-            throw new Exception("Wrong login or password");
         }
 
         private bool OptionsAreValid()

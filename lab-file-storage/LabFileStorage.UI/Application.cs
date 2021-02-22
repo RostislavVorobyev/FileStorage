@@ -4,7 +4,7 @@ using LabFileStorage.BLL.Services.Interfaces;
 using LabFileStorage.DAL.Repositories.Implementations;
 using LabFileStorage.DAL.Repositories.Interfaces;
 using LabFileStorage.UI.Commands;
-using LabFileStorage.UI.Util;
+using LabFileStorage.UI.Util.Parser;
 using Microsoft.Extensions.DependencyInjection;
 
 
@@ -12,13 +12,10 @@ namespace LabFileStorage.UI
 {
     public class Application
     {
-        static FileCommandParser parser;
-        static AuthorizeCommandParser authParser;
+        private static readonly ServiceProvider _serviceProvider = ConfigureServiceProvider();
+
         public static void Main()
         {
-            ServiceProvider serviceProvider = ConfigureServiceProvider();
-            parser = serviceProvider.GetRequiredService<FileCommandParser>();
-            authParser = serviceProvider.GetRequiredService<AuthorizeCommandParser>();
             Console.WriteLine("Runned");
             Authorize();
             while (true)
@@ -33,10 +30,7 @@ namespace LabFileStorage.UI
             {
                 try
                 {
-                    string userInput = Console.ReadLine();
-                    ICommand authorizationCommand = authParser.Parse(userInput);
-                    string authiorizationResult = authorizationCommand.Execute();
-                    Console.WriteLine(authiorizationResult);
+                    HandleInput(_serviceProvider.GetRequiredService<AuthorizeCommandParser>());
                 }
                 catch (Exception ex)
                 {
@@ -51,13 +45,7 @@ namespace LabFileStorage.UI
             Console.WriteLine("Input your command:");
             try
             {
-                string userInput = Console.ReadLine();
-                ICommand command = parser.Parse(userInput);
-                string commandResult = command.Execute();
-                if (commandResult != null)
-                {
-                    Console.WriteLine(commandResult);
-                }
+                HandleInput(_serviceProvider.GetRequiredService<FileCommandParser>());
             }
             catch (Exception ex)
             {
@@ -65,12 +53,23 @@ namespace LabFileStorage.UI
             }
         }
 
+        private static void HandleInput(CommandLineParser parser)
+        {
+            string userInput = Console.ReadLine();
+            ICommand command = parser.Parse(userInput);
+            string commandResult = command.Execute();
+            if (commandResult != null)
+            {
+                Console.WriteLine(commandResult);
+            }
+        }
+
         internal static ServiceProvider ConfigureServiceProvider()
         {
             ServiceProvider serviceProvider = new ServiceCollection()
-                .AddSingleton<IFileRepository, FileRepository>()
-                .AddSingleton<IMetaInformationRepository, MetaInformationRepository>()
-                .AddSingleton<IFileService, FileService>()
+                .AddScoped<IFileRepository, FileRepository>()
+                .AddScoped<IMetaInformationRepository, MetaInformationRepository>()
+                .AddScoped<IFileService, FileService>()
                 .AddSingleton<FileCommandParser>()
                 .AddSingleton<AuthorizeCommandParser>()
                 .BuildServiceProvider();
