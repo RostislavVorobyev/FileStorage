@@ -8,9 +8,9 @@ namespace LabFileStorage.DAL.Repositories.Implementations
     {
         private readonly string _storagePath;
 
-        public FileRepository()
+        public FileRepository(string storage)
         {
-            _storagePath = ConfigProvider.GetStoragePath();
+            _storagePath = storage;
         }
 
         public void Upload(string pathToFile)

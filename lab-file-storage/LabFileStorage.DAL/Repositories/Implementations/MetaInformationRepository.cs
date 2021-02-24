@@ -27,9 +27,9 @@ namespace LabFileStorage.DAL.Repositories.Implementations
             }
         }
 
-        public MetaInformationRepository()
+        public MetaInformationRepository(string storagePath)
         {
-            _storagePath = ConfigProvider.GetStoragePath();
+            _storagePath = storagePath;
             _metainfPath = $@"{_storagePath}\Metainf.bin";
         }
 

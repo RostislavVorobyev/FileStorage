@@ -1,6 +1,7 @@
 ﻿using System;
 using LabFileStorage.BLL.Services.Implementations;
 using LabFileStorage.BLL.Services.Interfaces;
+using LabFileStorage.Common;
 using LabFileStorage.DAL.Repositories.Implementations;
 using LabFileStorage.DAL.Repositories.Interfaces;
 using LabFileStorage.UI.Commands;
@@ -67,15 +68,26 @@ namespace LabFileStorage.UI
 
         internal static ServiceProvider ConfigureServiceProvider()
         {
+            string connectionString = ConfigProvider.GetStoragePath();
             ServiceProvider serviceProvider = new ServiceCollection()
-                .AddScoped<IFileRepository, FileRepository>()
-                .AddScoped<IMetaInformationRepository, MetaInformationRepository>()
+                .AddScoped(c => BuildFileRepository(connectionString))
+                .AddScoped(c => BuildMetaRepository(connectionString))
                 .AddScoped<IFileService, FileService>()
                 .AddSingleton<FileCommandParser>()
                 .AddSingleton<AuthorizeCommandParser>()
                 .BuildServiceProvider();
 
             return serviceProvider;
+        }
+
+        private static IFileRepository BuildFileRepository (string storage)
+        {
+            return new FileRepository(storage);
+        }
+
+        private static IMetaInformationRepository BuildMetaRepository(string storage)
+        {
+            return new MetaInformationRepository(storage);
         }
     }
 }
