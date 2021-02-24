@@ -14,7 +14,7 @@ namespace LabFileStorage.UI.Util.Parser
             List<string> commandOptions = ParseCommandOptions(inputArguments);
             switch (commandName)
             {
-                case SupportedCommandConstants.UserLoginCommand: return new LoginUser(commandOptions);
+                case SupportedCommandConstants.UserLogin: return new LoginUser(commandOptions);
                 default: throw new Exception("Use user login --l <login> --p <password> to log in.");
             }
         }

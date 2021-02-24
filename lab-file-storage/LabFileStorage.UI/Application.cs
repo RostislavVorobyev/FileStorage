@@ -12,40 +12,41 @@ namespace LabFileStorage.UI
 {
     public class Application
     {
-        private static readonly ServiceProvider _serviceProvider = ConfigureServiceProvider();
-
         public static void Main()
         {
+            ServiceProvider _serviceProvider = ConfigureServiceProvider();
+            FileCommandParser commandParser = _serviceProvider.GetRequiredService<FileCommandParser>();
+            AuthorizeCommandParser authorizeParser = _serviceProvider.GetRequiredService<AuthorizeCommandParser>();
             Console.WriteLine("Runned");
-            Authorize();
+            Authorize(authorizeParser);
             while (true)
             {
-                ReadUserCommand();
+                ReadUserCommand(commandParser);
             }
         }
 
-        private static void Authorize()
+        private static void Authorize(AuthorizeCommandParser authorizeParser)
         {
-            Console.WriteLine("Authorize to use the programm.");
+            Console.WriteLine("Authorize to use the program.");
             {
                 try
                 {
-                    HandleInput(_serviceProvider.GetRequiredService<AuthorizeCommandParser>());
+                    HandleInput(authorizeParser);
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
-                    Authorize();
+                    Authorize(authorizeParser);
                 }
             }
         }
 
-        private static void ReadUserCommand()
+        private static void ReadUserCommand(FileCommandParser commandParser)
         {
             Console.WriteLine("Input your command:");
             try
             {
-                HandleInput(_serviceProvider.GetRequiredService<FileCommandParser>());
+                HandleInput(commandParser);
             }
             catch (Exception ex)
             {
@@ -73,8 +74,10 @@ namespace LabFileStorage.UI
                 .AddSingleton<FileCommandParser>()
                 .AddSingleton<AuthorizeCommandParser>()
                 .BuildServiceProvider();
+
             return serviceProvider;
         }
     }
 }
+
 

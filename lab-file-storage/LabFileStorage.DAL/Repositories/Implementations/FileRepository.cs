@@ -1,5 +1,5 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
+using LabFileStorage.Common;
 using LabFileStorage.DAL.Repositories.Interfaces;
 
 namespace LabFileStorage.DAL.Repositories.Implementations
@@ -10,7 +10,7 @@ namespace LabFileStorage.DAL.Repositories.Implementations
 
         public FileRepository()
         {
-            _storagePath = $@"{AppContext.BaseDirectory.Substring(0, AppContext.BaseDirectory.IndexOf("LabFileStorage.UI"))}Database\";
+            _storagePath = ConfigProvider.GetStoragePath();
         }
 
         public void Upload(string pathToFile)

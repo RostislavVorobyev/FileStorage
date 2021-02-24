@@ -22,22 +22,22 @@ namespace LabFileStorage.UI.Util.Parser
             ICommand parsedCommand;
             switch (commandName)
             {
-                case SupportedCommandConstants.FileDeleteCommand:
+                case SupportedCommandConstants.FileDelete:
                     parsedCommand = new DeleteFile(_fileService, commandOptions);
                     break;
-                case SupportedCommandConstants.FileDownloadCommand:
+                case SupportedCommandConstants.FileDownload:
                     parsedCommand = new DownloadFile(_fileService, commandOptions);
                     break;
-                case SupportedCommandConstants.FileInfoCommand:
+                case SupportedCommandConstants.FileInfo:
                     parsedCommand = new InfoFile(_fileService, commandOptions);
                     break;
-                case SupportedCommandConstants.FileMoveCommand:
+                case SupportedCommandConstants.FileMove:
                     parsedCommand = new MoveFile(_fileService, commandOptions);
                     break;
-                case SupportedCommandConstants.FileUploadCommand:
+                case SupportedCommandConstants.FileUpload:
                     parsedCommand = new UploadFile(_fileService, commandOptions);
                     break;
-                case SupportedCommandConstants.UserInfoCommand:
+                case SupportedCommandConstants.UserInfo:
                     parsedCommand = new InfoUser(_fileService);
                     break;
                 default: throw new Exception("Non-existent command!");

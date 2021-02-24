@@ -1,7 +1,7 @@
-﻿using LabFileStorage.BLL.Services.Interfaces;
-using LabFileStorage.DAL.Repositories.Interfaces;
-using System;
+﻿using System;
 using System.IO;
+using LabFileStorage.BLL.Services.Interfaces;
+using LabFileStorage.DAL.Repositories.Interfaces;
 
 namespace LabFileStorage.BLL.Services.Implementations
 {
