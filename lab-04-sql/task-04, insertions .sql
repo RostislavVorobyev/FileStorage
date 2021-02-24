@@ -75,4 +75,4 @@ ALTER TABLE [StateProvince]
 DROP COLUMN IsOnlyStateProvinceFlag;
 
 ALTER TABLE [StateProvince]
-ADD [Population] [INT] NULL;
+ADD [Population] [INT];
