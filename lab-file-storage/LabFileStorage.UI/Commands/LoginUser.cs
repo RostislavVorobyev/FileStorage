@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Security.Authentication;
-using LabFileStorage.UI.Util;
+using LabFileStorage.Common;
 
 namespace LabFileStorage.UI.Commands
 {
@@ -13,8 +13,8 @@ namespace LabFileStorage.UI.Commands
 
         public LoginUser(List<string> options)
         {
-            _login = ConfigLoader.GetConfiguration()["Login"];
-            _password = ConfigLoader.GetConfiguration()["Password"];
+            _login = ConfigProvider.GetLogin();
+            _password = ConfigProvider.GetPassword();
             _options = options;
         }
 
