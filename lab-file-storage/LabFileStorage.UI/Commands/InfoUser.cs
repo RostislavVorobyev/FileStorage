@@ -1,5 +1,5 @@
 ﻿using LabFileStorage.BLL.Services.Interfaces;
-using LabFileStorage.Common;
+using LabFileStorage.UI.Util;
 
 namespace LabFileStorage.UI.Commands
 {
@@ -16,7 +16,7 @@ namespace LabFileStorage.UI.Commands
         {
             double storageUsed = (double)(_fileService.GetStorageSize() / 1000000);
             string userName = ConfigProvider.GetLogin();
-            string creationDate = ConfigProvider.GetPassword();
+            string creationDate = ConfigProvider.GetCreationDate();
 
             return $"login: {userName}\n" +
                 $"creation date: {creationDate}\n" +

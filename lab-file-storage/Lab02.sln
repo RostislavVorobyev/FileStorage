@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LabFileStorage.BLL", "LabFi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LabFileStorage.UI", "LabFileStorage.UI\LabFileStorage.UI.csproj", "{1B3AF5F1-F06C-477C-9578-120AA134CDF2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LabFileStorage.Common", "LabFileStorage.Common\LabFileStorage.Common.csproj", "{0CAC9FF4-1884-49A6-A0D3-FF76AD895EB3}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,10 +27,6 @@ Global
 		{1B3AF5F1-F06C-477C-9578-120AA134CDF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1B3AF5F1-F06C-477C-9578-120AA134CDF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1B3AF5F1-F06C-477C-9578-120AA134CDF2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0CAC9FF4-1884-49A6-A0D3-FF76AD895EB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0CAC9FF4-1884-49A6-A0D3-FF76AD895EB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0CAC9FF4-1884-49A6-A0D3-FF76AD895EB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0CAC9FF4-1884-49A6-A0D3-FF76AD895EB3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

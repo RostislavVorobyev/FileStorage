@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using LabFileStorage.Common;
 using LabFileStorage.DAL.Repositories.Interfaces;
 
 namespace LabFileStorage.DAL.Repositories.Implementations
