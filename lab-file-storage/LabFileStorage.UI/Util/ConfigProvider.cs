@@ -1,6 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿
+using Microsoft.Extensions.Configuration;
 
-namespace LabFileStorage.Common
+namespace LabFileStorage.UI.Util
 {
     public static class ConfigProvider
     {

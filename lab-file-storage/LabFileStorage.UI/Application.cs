@@ -1,10 +1,10 @@
 ﻿using System;
 using LabFileStorage.BLL.Services.Implementations;
 using LabFileStorage.BLL.Services.Interfaces;
-using LabFileStorage.Common;
 using LabFileStorage.DAL.Repositories.Implementations;
 using LabFileStorage.DAL.Repositories.Interfaces;
 using LabFileStorage.UI.Commands;
+using LabFileStorage.UI.Util;
 using LabFileStorage.UI.Util.Parser;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -70,24 +70,14 @@ namespace LabFileStorage.UI
         {
             string connectionString = ConfigProvider.GetStoragePath();
             ServiceProvider serviceProvider = new ServiceCollection()
-                .AddScoped(c => BuildFileRepository(connectionString))
-                .AddScoped(c => BuildMetaRepository(connectionString))
+                .AddScoped<IFileRepository>(c => new FileRepository(connectionString))
+                .AddScoped<IMetaInformationRepository>(c => new MetaInformationRepository(connectionString))
                 .AddScoped<IFileService, FileService>()
                 .AddSingleton<FileCommandParser>()
-                .AddSingleton<AuthorizeCommandParser>()
+                .AddSingleton(c => new AuthorizeCommandParser(ConfigProvider.GetLogin(), ConfigProvider.GetPassword()))
                 .BuildServiceProvider();
 
             return serviceProvider;
-        }
-
-        private static IFileRepository BuildFileRepository (string storage)
-        {
-            return new FileRepository(storage);
-        }
-
-        private static IMetaInformationRepository BuildMetaRepository(string storage)
-        {
-            return new MetaInformationRepository(storage);
         }
     }
 }
