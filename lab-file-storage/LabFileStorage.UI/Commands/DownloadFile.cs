@@ -1,15 +1,26 @@
-﻿namespace LabFileStorage.UI.Commands
+﻿using System.Collections.Generic;
+using LabFileStorage.BLL.Services.Interfaces;
+
+namespace LabFileStorage.UI.Commands
 {
-    internal class DownloadFile : ConsoleCommand
+    internal class DownloadFile : ICommand
     {
-        
-        public override bool Execute()
+        private readonly IFileService _fileService;
+        private readonly List<string> _options;
+
+        public DownloadFile(IFileService fileService, List<string> options)
         {
-            string fileName = Options[0];
-            string destinationPath = Options[1];
+            _fileService = fileService;
+            _options = options;
+        }
+
+        public string Execute()
+        {
+            string fileName = _options[0];
+            string destinationPath = _options[1];
             _fileService.Download(fileName, destinationPath);
-            ResultMessage = $"The file {Options[0]} has been downloaded";
-            return true;
+
+            return $"The file {_options[0]} has been downloaded";
         }
     }
 }

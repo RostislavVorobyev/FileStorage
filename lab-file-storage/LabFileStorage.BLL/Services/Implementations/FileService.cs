@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using LabFileStorage.BLL.Services.Interfaces;
-using LabFileStorage.DAL.Repositories.Implementations;
 using LabFileStorage.DAL.Repositories.Interfaces;
 
 namespace LabFileStorage.BLL.Services.Implementations
@@ -11,17 +10,12 @@ namespace LabFileStorage.BLL.Services.Implementations
         private readonly IFileRepository _fileRepository;
         private readonly IMetaInformationRepository _metaInformationRepository;
 
-        public FileService()
-        {
-            _fileRepository = new FileRepository();
-            _metaInformationRepository = new MetaInformationRepository();
-        }
-
         public FileService(IFileRepository fileRepository, IMetaInformationRepository metaInformationRepository)
         {
             _fileRepository = fileRepository;
             _metaInformationRepository = metaInformationRepository;
         }
+
         public void Upload(string pathToFile)
         {
             if (FileExceedsSizeLimit(pathToFile))

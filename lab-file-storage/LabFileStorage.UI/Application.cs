@@ -1,7 +1,13 @@
 ﻿using System;
-using System.Security.Authentication;
+using LabFileStorage.BLL.Services.Implementations;
+using LabFileStorage.BLL.Services.Interfaces;
+using LabFileStorage.DAL.Repositories.Implementations;
+using LabFileStorage.DAL.Repositories.Interfaces;
 using LabFileStorage.UI.Commands;
 using LabFileStorage.UI.Util;
+using LabFileStorage.UI.Util.Parser;
+using Microsoft.Extensions.DependencyInjection;
+
 
 namespace LabFileStorage.UI
 {
@@ -9,49 +15,39 @@ namespace LabFileStorage.UI
     {
         public static void Main()
         {
+            ServiceProvider _serviceProvider = ConfigureServiceProvider();
+            FileCommandParser commandParser = _serviceProvider.GetRequiredService<FileCommandParser>();
+            AuthorizeCommandParser authorizeParser = _serviceProvider.GetRequiredService<AuthorizeCommandParser>();
             Console.WriteLine("Runned");
-            Authorize();
+            Authorize(authorizeParser);
             while (true)
             {
-                ReadUserCommand();
+                ReadUserCommand(commandParser);
             }
         }
 
-        private static void Authorize()
+        private static void Authorize(AuthorizeCommandParser authorizeParser)
         {
-            bool isAuthorized = false;
-            while (!isAuthorized)
+            Console.WriteLine("Authorize to use the program.");
             {
-                Console.WriteLine("Authorize to use the programm.");
-                string command = Console.ReadLine();
-                ICommand authorization = CommandParser.Parse(command.Split(" "));
-                if (authorization?.GetType() == typeof(LoginUser))
+                try
                 {
-                    try
-                    {
-                        isAuthorized = authorization.Execute();
-                        Console.WriteLine(authorization.GetResultMessage());
-                    }
-                    catch (AuthenticationException ex)
-                    {
-                        Console.WriteLine(ex.Message);
-                    }
+                    HandleInput(authorizeParser);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    Authorize(authorizeParser);
                 }
             }
         }
 
-        private static void ReadUserCommand()
+        private static void ReadUserCommand(FileCommandParser commandParser)
         {
             Console.WriteLine("Input your command:");
             try
             {
-                string command = Console.ReadLine();
-                ICommand authorization = CommandParser.Parse(command.Split(" "));
-                authorization?.Execute();
-                if (authorization?.GetResultMessage() != null)
-                {
-                    Console.WriteLine(authorization.GetResultMessage());
-                }
+                HandleInput(commandParser);
             }
             catch (Exception ex)
             {
@@ -59,6 +55,31 @@ namespace LabFileStorage.UI
             }
         }
 
+        private static void HandleInput(CommandLineParser parser)
+        {
+            string userInput = Console.ReadLine();
+            ICommand command = parser.Parse(userInput);
+            string commandResult = command.Execute();
+            if (commandResult != null)
+            {
+                Console.WriteLine(commandResult);
+            }
+        }
+
+        internal static ServiceProvider ConfigureServiceProvider()
+        {
+            string connectionString = ConfigProvider.GetStoragePath();
+            ServiceProvider serviceProvider = new ServiceCollection()
+                .AddScoped<IFileRepository>(c => new FileRepository(connectionString))
+                .AddScoped<IMetaInformationRepository>(c => new MetaInformationRepository(connectionString))
+                .AddScoped<IFileService, FileService>()
+                .AddSingleton<FileCommandParser>()
+                .AddSingleton(c => new AuthorizeCommandParser(ConfigProvider.GetLogin(), ConfigProvider.GetPassword()))
+                .BuildServiceProvider();
+
+            return serviceProvider;
+        }
     }
 }
+
 

@@ -5,9 +5,9 @@ VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LabFileStorage.DAL", "LabFileStorage.DAL\LabFileStorage.DAL.csproj", "{C655F428-EDC3-40AC-97B1-AE3A69B46E74}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LabFileStorage.BLL", "LabFileStorage.BLL\LabFileStorage.BLL.csproj", "{61B08EBA-9B43-4F91-B495-17A259F25B7E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LabFileStorage.BLL", "LabFileStorage.BLL\LabFileStorage.BLL.csproj", "{61B08EBA-9B43-4F91-B495-17A259F25B7E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LabFileStorage.UI", "LabFileStorage.UI\LabFileStorage.UI.csproj", "{1B3AF5F1-F06C-477C-9578-120AA134CDF2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LabFileStorage.UI", "LabFileStorage.UI\LabFileStorage.UI.csproj", "{1B3AF5F1-F06C-477C-9578-120AA134CDF2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

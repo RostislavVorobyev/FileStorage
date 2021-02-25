@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -27,9 +26,9 @@ namespace LabFileStorage.DAL.Repositories.Implementations
             }
         }
 
-        public MetaInformationRepository()
+        public MetaInformationRepository(string storagePath)
         {
-            _storagePath = $@"{AppContext.BaseDirectory.Substring(0, AppContext.BaseDirectory.IndexOf("LabFileStorage.UI"))}Database\";
+            _storagePath = storagePath;
             _metainfPath = $@"{_storagePath}\Metainf.bin";
         }
 

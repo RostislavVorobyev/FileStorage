@@ -1,19 +1,26 @@
-﻿using LabFileStorage.UI.Util;
+﻿using LabFileStorage.BLL.Services.Interfaces;
+using LabFileStorage.UI.Util;
 
 namespace LabFileStorage.UI.Commands
 {
-    internal class InfoUser : ConsoleCommand
+    internal class InfoUser : ICommand
     {
-        public override bool Execute()
+        private readonly IFileService _fileService;
+
+        public InfoUser(IFileService fileService)
         {
-            double storageUsed = (double)(_fileService.GetStorageSize() / 1000000);
-            string userName = ConfigLoader.GetConfiguration()["Login"];
-            string creationDate = ConfigLoader.GetConfiguration()["Creation date"];
-            ResultMessage = $"login: {userName}\n" +
-                $"creation date: {creationDate}\n" +
-                $"storage used: {storageUsed} MB";
-            return true;
+            _fileService = fileService;
         }
 
+        public string Execute()
+        {
+            double storageUsed = (double)(_fileService.GetStorageSize() / 1000000);
+            string userName = ConfigProvider.GetLogin();
+            string creationDate = ConfigProvider.GetCreationDate();
+
+            return $"login: {userName}\n" +
+                $"creation date: {creationDate}\n" +
+                $"storage used: {storageUsed} MB";
+        }
     }
 }
