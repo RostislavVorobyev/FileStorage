@@ -1,18 +1,12 @@
 ﻿using Lab02FileStorageDAL.Entities;
-using System.Collections.Generic;
 
 namespace LabFileStorage.DAL.Repositories.Interfaces
 {
     public interface IMetaInformationRepository
     {
-        Dictionary<string, FileMetaInformation> Storage { get; }
-
-        void Add(string pathToFile);
-        FileMetaInformation CreateMetaInformation(string pathToFile);
+        void Add(FileMetaInformation fileMetadata);
         void Delete(string fileName);
+        void Update(FileMetaInformation fileMetadata);
         FileMetaInformation Get(string fileName);
-        void IncrementDownloads(string fileName);
-        void RenameFile(string fileName, string newName);
-        public long GetStorageSize();
     }
 }
