@@ -36,6 +36,12 @@ INNER JOIN [HumanResources].[EmployeePayHistory] AS p ON [p].[BusinessEntityID] 
 
 -- 6) Вывести на экран почасовые ставки сотрудников, с указанием максимальной ставки для каждого отдела в столбце MaxInDepartment. 
 -- В рамках каждого отдела разбейте все ставки на группы таким образом, чтобы ставки с одинаковыми значениями входили в состав одной группы. 
+SELECT [Department].[Name], [EmployeeDepartmentHistory].[BusinessEntityID], [EmployeePayHistory].[Rate], 
+MAX([EmployeePayHistory].[Rate]) OVER (PARTITION BY [Department].[Name]) AS [MaxInDepartment],
+DENSE_RANK() OVER (PARTITION BY [Department].[Name] ORDER BY [EmployeePayHistory].[Rate] ASC) AS [RateGroup]
+FROM [HumanResources].[EmployeeDepartmentHistory]
+INNER JOIN [HumanResources].[Department] ON ([EmployeeDepartmentHistory].[DepartmentID] = [Department].[DepartmentID])
+INNER JOIN [HumanResources].[EmployeePayHistory] ON ([EmployeeDepartmentHistory].[BusinessEntityID] = [EmployeePayHistory].[BusinessEntityID]);
 
 -- 7) Вывести на экран список сотрудников, которые работают в вечернюю смену.
 SELECT [Employee].[BusinessEntityID]
