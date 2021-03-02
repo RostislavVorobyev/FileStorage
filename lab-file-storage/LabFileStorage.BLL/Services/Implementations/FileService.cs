@@ -10,11 +10,13 @@ namespace LabFileStorage.BLL.Services.Implementations
     {
         private readonly IFileRepository _fileRepository;
         private readonly IMetaInformationRepository _metaInformationRepository;
+        private readonly string _storagePath;
 
-        public FileService(IFileRepository fileRepository, IMetaInformationRepository metaInformationRepository)
+        public FileService(IFileRepository fileRepository, IMetaInformationRepository metaInformationRepository, string storagePath)
         {
             _fileRepository = fileRepository;
             _metaInformationRepository = metaInformationRepository;
+            _storagePath = storagePath;
         }
 
         public void Upload(string pathToFile)
@@ -28,11 +30,11 @@ namespace LabFileStorage.BLL.Services.Implementations
             _metaInformationRepository.Add(metaToAdd);
         }
 
-        private FileMetaInformation BuildMetaInformation (string pathToFile)
+        private FileMetaInformation BuildMetaInformation(string pathToFile)
         {
             FileInfo file = new FileInfo(pathToFile);
-            //todo change path
-            string uploadPath = $"{file.Name}";
+            string uploadPath = $"{_storagePath}{file.Name}";
+
             return new FileMetaInformation(file.Name, uploadPath, file.Extension, file.Length, file.CreationTime);
         }
 
@@ -40,6 +42,7 @@ namespace LabFileStorage.BLL.Services.Implementations
         {
             long fileSizeRestriction = 10000;
             FileInfo file = new FileInfo(pathToFile);
+
             return file.Length > fileSizeRestriction;
         }
 
@@ -88,9 +91,13 @@ namespace LabFileStorage.BLL.Services.Implementations
 
         public long GetStorageSize()
         {
-            //todo implemet 
-            return 150;
-        }
+            long totalStorageSize = 0;
+            foreach (var metadata in _metaInformationRepository.GetAllMetadata())
+            {
+                totalStorageSize += metadata.Size;
+            }
 
+            return totalStorageSize;
+        }
     }
 }

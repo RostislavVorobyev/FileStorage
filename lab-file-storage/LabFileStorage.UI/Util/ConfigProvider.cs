@@ -51,5 +51,10 @@ namespace LabFileStorage.UI.Util
         {
             return Сonfiguration["Creation date"];
         }
+
+        public static string GetMSSQLConnectionString()
+        {
+            return Сonfiguration.GetConnectionString("MSSQL");
+        }
     }
 }

@@ -1,11 +1,13 @@
 ﻿using System;
 using LabFileStorage.BLL.Services.Implementations;
 using LabFileStorage.BLL.Services.Interfaces;
+using LabFileStorage.DAL.Context;
 using LabFileStorage.DAL.Repositories.Implementations;
 using LabFileStorage.DAL.Repositories.Interfaces;
 using LabFileStorage.UI.Commands;
 using LabFileStorage.UI.Util;
 using LabFileStorage.UI.Util.Parser;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 
@@ -19,7 +21,7 @@ namespace LabFileStorage.UI
             FileCommandParser commandParser = _serviceProvider.GetRequiredService<FileCommandParser>();
             AuthorizeCommandParser authorizeParser = _serviceProvider.GetRequiredService<AuthorizeCommandParser>();
             Console.WriteLine("Runned");
-            Authorize(authorizeParser);
+            //Authorize(authorizeParser);
             while (true)
             {
                 ReadUserCommand(commandParser);
@@ -68,11 +70,12 @@ namespace LabFileStorage.UI
 
         internal static ServiceProvider ConfigureServiceProvider()
         {
-            string connectionString = ConfigProvider.GetStoragePath();
+            string storagePath = ConfigProvider.GetStoragePath();
+            string connectionString = ConfigProvider.GetMSSQLConnectionString();
             ServiceProvider serviceProvider = new ServiceCollection()
-                .AddScoped<IFileRepository>(c => new FileRepository(connectionString))
-                .AddScoped<IMetaInformationRepository>(c => new MetaInformationRepository(connectionString))
-                .AddScoped<IFileService, FileService>()
+                .AddScoped<IFileRepository>(c => new FileRepository(storagePath))
+                .AddScoped<IMetaInformationRepository>(c => new MetadataDBRepository(new ApplicationDbContext(connectionString)))
+                .AddScoped<IFileService, FileService>(c => new FileService(c.GetService<IFileRepository>(), c.GetService<IMetaInformationRepository>(), storagePath))
                 .AddSingleton<FileCommandParser>()
                 .AddSingleton(c => new AuthorizeCommandParser(ConfigProvider.GetLogin(), ConfigProvider.GetPassword()))
                 .BuildServiceProvider();

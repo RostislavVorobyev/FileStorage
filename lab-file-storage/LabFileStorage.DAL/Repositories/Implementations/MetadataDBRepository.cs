@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Lab02FileStorageDAL.Entities;
 using LabFileStorage.DAL.Context;
 using LabFileStorage.DAL.Repositories.Interfaces;
@@ -23,6 +24,11 @@ namespace LabFileStorage.DAL.Repositories.Implementations
         public FileMetaInformation Get(string fileName)
         {
             return _context.FileMetadata.Where(c => c.FileName == fileName).FirstOrDefault();
+        }
+
+        public List<FileMetaInformation> GetAllMetadata()
+        {
+            return _context.FileMetadata.ToList();
         }
 
         public void Delete(string fileName)
