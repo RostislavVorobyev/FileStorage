@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using Lab02FileStorageDAL.Entities;
 using LabFileStorage.BLL.Services.Interfaces;
 using LabFileStorage.DAL.Repositories.Interfaces;
 
@@ -23,7 +24,16 @@ namespace LabFileStorage.BLL.Services.Implementations
                 throw new ArgumentException("File is too big to be uploaded");
             }
             _fileRepository.Upload(pathToFile);
-            _metaInformationRepository.Add(pathToFile);
+            FileMetaInformation metaToAdd = BuildMetaInformation(pathToFile);
+            _metaInformationRepository.Add(metaToAdd);
+        }
+
+        private FileMetaInformation BuildMetaInformation (string pathToFile)
+        {
+            FileInfo file = new FileInfo(pathToFile);
+            //todo change path
+            string uploadPath = $"{file.Name}";
+            return new FileMetaInformation(file.Name, uploadPath, file.Extension, file.Length, file.CreationTime);
         }
 
         private bool FileExceedsSizeLimit(string pathToFile)
@@ -36,7 +46,14 @@ namespace LabFileStorage.BLL.Services.Implementations
         public void Download(string file, string downloadPath)
         {
             _fileRepository.Download(file, downloadPath);
-            _metaInformationRepository.IncrementDownloads(file);
+            IncrementDownloads(file);
+        }
+
+        private void IncrementDownloads(string file)
+        {
+            FileMetaInformation metaToIncrement = _metaInformationRepository.Get(file);
+            metaToIncrement.DownloadsCounter++;
+            _metaInformationRepository.Update(metaToIncrement);
         }
 
         public string GetInfo(string fileName)
@@ -51,7 +68,16 @@ namespace LabFileStorage.BLL.Services.Implementations
         public void Move(string sourceFile, string destinationFile)
         {
             _fileRepository.Move(sourceFile, destinationFile);
-            _metaInformationRepository.RenameFile(sourceFile, destinationFile);
+            RenameFile(sourceFile, destinationFile);
+        }
+
+        private void RenameFile(string sourceFile, string destinationFile)
+        {
+            FileMetaInformation filemeta = _metaInformationRepository.Get(sourceFile);
+            filemeta.FileName = destinationFile;
+            string oldPath = filemeta.PathToFile;
+            filemeta.PathToFile = oldPath.Substring(oldPath.LastIndexOf("\\")) + destinationFile;
+            _metaInformationRepository.Update(filemeta);
         }
 
         public void Delete(string fileName)
@@ -62,7 +88,9 @@ namespace LabFileStorage.BLL.Services.Implementations
 
         public long GetStorageSize()
         {
-            return _metaInformationRepository.GetStorageSize();
+            //todo implemet 
+            return 150;
         }
+
     }
 }
