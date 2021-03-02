@@ -6,10 +6,16 @@ namespace LabFileStorage.DAL.Context
     public class ApplicationDbContext : DbContext
     {
         private readonly string _connectionString;
+
+        // For migrations only.
+        public ApplicationDbContext()
+        {
+            _connectionString = "Server=(localdb)\\mssqllocaldb;Database=Lab-05;Trusted_Connection=True;";
+        }
+
         public ApplicationDbContext(string connectionString)
         {
             _connectionString = connectionString;
-            Database.EnsureCreated();
         }
 
         public DbSet<FileMetaInformation> FileMetadata { get; set; }
@@ -22,9 +28,11 @@ namespace LabFileStorage.DAL.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //sample data seeding to copmlete task 3
-            modelBuilder.Entity<FileMetaInformation>().HasData(new FileMetaInformation("filename", "samplepath", ".ext", 0, System.DateTime.Now));
+            modelBuilder.Entity<FileMetaInformation>()
+                .HasData(new FileMetaInformation("filename", "samplepath", ".ext", 0, System.DateTime.Now) { Id = 1 });
 
-            modelBuilder.Entity<FileMetaInformation>().HasKey(s => s.FileName);
+            modelBuilder.Entity<FileMetaInformation>().HasKey(s => s.Id);
+            modelBuilder.Entity<FileMetaInformation>().Property(s => s.FileName).IsRequired();
             modelBuilder.Entity<FileMetaInformation>().Property(s => s.PathToFile).IsRequired();
             modelBuilder.Entity<FileMetaInformation>().Property(s => s.Size).IsRequired();
             modelBuilder.Entity<FileMetaInformation>().Property(s => s.Extension).IsRequired();

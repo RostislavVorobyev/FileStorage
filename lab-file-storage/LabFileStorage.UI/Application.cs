@@ -7,7 +7,6 @@ using LabFileStorage.DAL.Repositories.Interfaces;
 using LabFileStorage.UI.Commands;
 using LabFileStorage.UI.Util;
 using LabFileStorage.UI.Util.Parser;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 
@@ -21,7 +20,7 @@ namespace LabFileStorage.UI
             FileCommandParser commandParser = _serviceProvider.GetRequiredService<FileCommandParser>();
             AuthorizeCommandParser authorizeParser = _serviceProvider.GetRequiredService<AuthorizeCommandParser>();
             Console.WriteLine("Runned");
-            //Authorize(authorizeParser);
+            Authorize(authorizeParser);
             while (true)
             {
                 ReadUserCommand(commandParser);

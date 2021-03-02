@@ -5,6 +5,7 @@ namespace Lab02FileStorageDAL.Entities
     [Serializable]
     public class FileMetaInformation
     {
+        public int Id { get; set; }
         public string FileName { get; set; }
         public string PathToFile { get; set; }
         public string Extension { get; set; }
@@ -21,6 +22,5 @@ namespace Lab02FileStorageDAL.Entities
             CreationDate = creationDate;
             DownloadsCounter = 0;
         }
-
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Lab02FileStorageDAL.Entities;
 using LabFileStorage.DAL.Context;
@@ -23,7 +24,12 @@ namespace LabFileStorage.DAL.Repositories.Implementations
 
         public FileMetaInformation Get(string fileName)
         {
-            return _context.FileMetadata.Where(c => c.FileName == fileName).FirstOrDefault();
+            var metadata = _context.FileMetadata.Where(c => c.FileName == fileName).FirstOrDefault();
+            if (metadata == null)
+            {
+                throw new ArgumentException($"File '{fileName}' not found.");
+            }
+            return metadata;
         }
 
         public List<FileMetaInformation> GetAllMetadata()
