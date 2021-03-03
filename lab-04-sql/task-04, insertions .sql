@@ -29,7 +29,7 @@ INSERT INTO [Person] SELECT [p].[BusinessEntityID], [p].[PersonType], [p].[NameS
 FROM [HumanResources].[Employee] AS [emp]
 INNER JOIN [Person].[Person] AS p ON [emp].[BusinessEntityID] = [p].[BusinessEntityID]
 INNER JOIN [HumanResources].[Department] AS d ON [p].[BusinessEntityID] = [emp].[BusinessEntityID]
-WHERE [d].[Name] NOT LIKE 'Finance';
+WHERE [d].[Name] != 'Finance' AND (MiddleName = 'J' OR MiddleName = 'L');
 
 -- 6)
 ALTER TABLE [Person]
@@ -61,7 +61,6 @@ ADD CONSTRAINT DF_StateProvince_ModifiedDate DEFAULT (GETDATE()) FOR [ModifiedDa
 
 -- 5) 
 INSERT INTO [StateProvince] SELECT 
-	p.StateProvinceID, 
 	p.StateProvinceCode, 
 	p.CountryRegionCode, 
 	p.IsOnlyStateProvinceFlag, 

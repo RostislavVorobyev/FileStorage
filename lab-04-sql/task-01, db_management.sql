@@ -5,6 +5,7 @@ CREATE DATABASE [Something];
 SELECT [name], [crdate] FROM sys.sysdatabases;
 
 --3) В базе Something создайте таблицу Wicked с одной колонкой Id типа INT. Колонка Id не должна поддерживать NULL значения.
+USE [Something];
 CREATE TABLE [Wicked] ([ID] [int] NOT NULL);
 
 --4) Создайте бэкап базы данных Something при помощи инструкции BACKUP DATABASE.

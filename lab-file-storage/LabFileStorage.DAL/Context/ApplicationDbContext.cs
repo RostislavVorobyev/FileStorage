@@ -7,12 +7,6 @@ namespace LabFileStorage.DAL.Context
     {
         private readonly string _connectionString;
 
-        // For migrations only.
-        public ApplicationDbContext()
-        {
-            _connectionString = "Server=(localdb)\\mssqllocaldb;Database=Lab-05;Trusted_Connection=True;";
-        }
-
         public ApplicationDbContext(string connectionString)
         {
             _connectionString = connectionString;
