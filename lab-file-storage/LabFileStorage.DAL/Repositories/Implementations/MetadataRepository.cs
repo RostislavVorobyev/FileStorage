@@ -7,11 +7,11 @@ using LabFileStorage.DAL.Repositories.Interfaces;
 
 namespace LabFileStorage.DAL.Repositories.Implementations
 {
-    public class MetadataDBRepository : IMetaInformationRepository
+    public class MetadataRepository : IMetadataRepository
     {
         private readonly ApplicationDbContext _context;
 
-        public MetadataDBRepository(ApplicationDbContext context)
+        public MetadataRepository(ApplicationDbContext context)
         {
             _context = context;
         }

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
+using System.Resources;
 using Lab02FileStorageDAL.Entities;
 using LabFileStorage.BLL.Services.Interfaces;
 using LabFileStorage.DAL.Repositories.Interfaces;
@@ -9,13 +11,13 @@ namespace LabFileStorage.BLL.Services.Implementations
     public class FileService : IFileService
     {
         private readonly IFileRepository _fileRepository;
-        private readonly IMetaInformationRepository _metaInformationRepository;
+        private readonly IMetadataRepository _metadataRepository;
         private readonly string _storagePath;
 
-        public FileService(IFileRepository fileRepository, IMetaInformationRepository metaInformationRepository, string storagePath)
+        public FileService(IFileRepository fileRepository, IMetadataRepository metadataRepository, string storagePath)
         {
             _fileRepository = fileRepository;
-            _metaInformationRepository = metaInformationRepository;
+            _metadataRepository = metadataRepository;
             _storagePath = storagePath;
         }
 
@@ -27,7 +29,7 @@ namespace LabFileStorage.BLL.Services.Implementations
             }
             _fileRepository.Upload(pathToFile);
             FileMetaInformation metaToAdd = BuildMetaInformation(pathToFile);
-            _metaInformationRepository.Add(metaToAdd);
+            _metadataRepository.Add(metaToAdd);
         }
 
         private FileMetaInformation BuildMetaInformation(string pathToFile)
@@ -54,20 +56,19 @@ namespace LabFileStorage.BLL.Services.Implementations
 
         private void IncrementDownloads(string file)
         {
-            FileMetaInformation metaToIncrement = _metaInformationRepository.Get(file);
+            FileMetaInformation metaToIncrement = _metadataRepository.Get(file);
             metaToIncrement.DownloadsCounter++;
-            _metaInformationRepository.Update(metaToIncrement);
+            _metadataRepository.Update(metaToIncrement);
         }
 
         public string GetInfo(string fileName)
         {
-            var meta = _metaInformationRepository.Get(fileName);
-            return $"name: {meta.FileName}\n" +
-                $"extension: {meta.Extension.Substring(1)}\n" +
-                $"creation date: {meta.CreationDate.ToString("yyyy-MM-dd")}\n" +
-                "login: Vorobey";
+            var meta = _metadataRepository.Get(fileName);
+            ResourceManager resourceManager = new ResourceManager("LabFileStorage.BLL.Resources.Strings", Assembly.GetExecutingAssembly());
+            string messageTemplate = resourceManager.GetString("FileInfoMessage");
+            return String.Format(messageTemplate, meta.FileName, meta.Extension.Substring(1), meta.CreationDate.ToString("yyyy-MM-dd"));
         }
-
+         
         public void Move(string sourceFile, string destinationFile)
         {
             _fileRepository.Move(sourceFile, destinationFile);
@@ -76,23 +77,23 @@ namespace LabFileStorage.BLL.Services.Implementations
 
         private void RenameFile(string sourceFile, string destinationFile)
         {
-            FileMetaInformation filemeta = _metaInformationRepository.Get(sourceFile);
+            FileMetaInformation filemeta = _metadataRepository.Get(sourceFile);
             filemeta.FileName = destinationFile;
             string oldPath = filemeta.PathToFile;
             filemeta.PathToFile = oldPath.Substring(oldPath.LastIndexOf("\\")) + destinationFile;
-            _metaInformationRepository.Update(filemeta);
+            _metadataRepository.Update(filemeta);
         }
 
         public void Delete(string fileName)
         {
             _fileRepository.Delete(fileName);
-            _metaInformationRepository.Delete(fileName);
+            _metadataRepository.Delete(fileName);
         }
 
         public long GetStorageSize()
         {
             long totalStorageSize = 0;
-            foreach (var metadata in _metaInformationRepository.GetAllMetadata())
+            foreach (var metadata in _metadataRepository.GetAllMetadata())
             {
                 totalStorageSize += metadata.Size;
             }

@@ -3,7 +3,7 @@ using Lab02FileStorageDAL.Entities;
 
 namespace LabFileStorage.DAL.Repositories.Interfaces
 {
-    public interface IMetaInformationRepository
+    public interface IMetadataRepository
     {
         void Add(FileMetaInformation fileMetadata);
         void Delete(string fileName);

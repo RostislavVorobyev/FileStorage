@@ -73,8 +73,8 @@ namespace LabFileStorage.UI
             string connectionString = ConfigProvider.GetMSSQLConnectionString();
             ServiceProvider serviceProvider = new ServiceCollection()
                 .AddScoped<IFileRepository>(c => new FileRepository(storagePath))
-                .AddScoped<IMetaInformationRepository>(c => new MetadataDBRepository(new ApplicationDbContext(connectionString)))
-                .AddScoped<IFileService, FileService>(c => new FileService(c.GetService<IFileRepository>(), c.GetService<IMetaInformationRepository>(), storagePath))
+                .AddScoped<IMetadataRepository>(c => new MetadataRepository(new ApplicationDbContext(connectionString)))
+                .AddScoped<IFileService, FileService>(c => new FileService(c.GetService<IFileRepository>(), c.GetService<IMetadataRepository>(), storagePath))
                 .AddSingleton<FileCommandParser>()
                 .AddSingleton(c => new AuthorizeCommandParser(ConfigProvider.GetLogin(), ConfigProvider.GetPassword()))
                 .BuildServiceProvider();
