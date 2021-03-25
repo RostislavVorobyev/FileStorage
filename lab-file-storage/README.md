@@ -1,3 +1,5 @@
+Сonsole file storage that supports one user and the ability to download/manipulate files.
+
 Application's configuration can be changed manualy with appsettings.json.
 
 To change user related data edit "Login" and "Password". 

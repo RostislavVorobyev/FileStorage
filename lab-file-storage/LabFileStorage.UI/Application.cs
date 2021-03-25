@@ -1,6 +1,7 @@
 ﻿using System;
 using LabFileStorage.BLL.Services.Implementations;
 using LabFileStorage.BLL.Services.Interfaces;
+using LabFileStorage.DAL.Context;
 using LabFileStorage.DAL.Repositories.Implementations;
 using LabFileStorage.DAL.Repositories.Interfaces;
 using LabFileStorage.UI.Commands;
@@ -68,11 +69,12 @@ namespace LabFileStorage.UI
 
         internal static ServiceProvider ConfigureServiceProvider()
         {
-            string connectionString = ConfigProvider.GetStoragePath();
+            string storagePath = ConfigProvider.GetStoragePath();
+            string connectionString = ConfigProvider.GetMSSQLConnectionString();
             ServiceProvider serviceProvider = new ServiceCollection()
-                .AddScoped<IFileRepository>(c => new FileRepository(connectionString))
-                .AddScoped<IMetaInformationRepository>(c => new MetaInformationRepository(connectionString))
-                .AddScoped<IFileService, FileService>()
+                .AddScoped<IFileRepository>(c => new FileRepository(storagePath))
+                .AddScoped<IMetadataRepository>(c => new MetadataRepository(new ApplicationDbContext(connectionString)))
+                .AddScoped<IFileService, FileService>(c => new FileService(c.GetService<IFileRepository>(), c.GetService<IMetadataRepository>(), storagePath))
                 .AddSingleton<FileCommandParser>()
                 .AddSingleton(c => new AuthorizeCommandParser(ConfigProvider.GetLogin(), ConfigProvider.GetPassword()))
                 .BuildServiceProvider();
